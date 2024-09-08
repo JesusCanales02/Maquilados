@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <style>
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            white-space: nowrap;
+            margin-right: 5px;
+        }
+        
+        .input-group input {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <!-- Cabecera -->
+    <div class="container mt-4 d-flex justify-content-center">
+        <div class="input-group d-flex flex-wrap justify-content-center">
+            <div class="d-flex align-items-center mb-3 me-3">
+                <label for="solicitante" class="form-label me-2" style="font-size: 0.9rem;">Solicitante:</label>
+                <input type="text" class="form-control" id="solicitante" name="solicitante" style="width: 220px;">
+            </div>
+            <div class="d-flex align-items-center mb-3 me-3">
+                <label for="descripcion" class="form-label me-2" style="font-size: 0.9rem;">Descripción:</label>
+                <input type="text" class="form-control" id="descripcion" name="descripcion" style="width: 220px;">
+            </div>
+            <div class="d-flex align-items-center mb-3 me-3">
+                <label for="idRequerimiento" class="form-label me-2" style="font-size: 0.9rem;">ID de Req.:</label>
+                <input type="text" class="form-control" id="idRequerimiento" name="idRequerimiento" style="width: 220px;">
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <label for="fechaSolicitud" class="form-label me-2" style="font-size: 0.9rem;">Fecha Solic.:</label>
+                <input type="date" class="form-control" id="fechaSolicitud" name="fechaSolicitud" style="width: 220px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Tabla más grande -->
+            <div class="col-md-8" style="float: left; width: 60%;">
+                <table id="myTable" class="table table-bordered" style="min-height: 100px;">
+                    <thead>
+                        <tr>
+                            <th>Linea</th>
+                            <th>Descripción</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>UDM</th>
+                            <th>Proveedor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" name="descripcion[]" class="form-control" placeholder="Descripción"></td>
+                            <td><input type="text" name="marca[]" class="form-control" placeholder="Marca"></td>
+                            <td><input type="text" name="modelo[]" class="form-control" placeholder="Modelo"></td>
+                            <td><input type="text" name="udm[]" class="form-control" placeholder="UDM"></td>
+                            <td><input type="text" name="proveedor[]" class="form-control" placeholder="Proveedor"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="text" name="descripcion[]" class="form-control" placeholder="Descripción"></td>
+                            <td><input type="text" name="marca[]" class="form-control" placeholder="Marca"></td>
+                            <td><input type="text" name="modelo[]" class="form-control" placeholder="Modelo"></td>
+                            <td><input type="text" name="udm[]" class="form-control" placeholder="UDM"></td>
+                            <td><input type="text" name="proveedor[]" class="form-control" placeholder="Proveedor"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="text" name="descripcion[]" class="form-control" placeholder="Descripción"></td>
+                            <td><input type="text" name="marca[]" class="form-control" placeholder="Marca"></td>
+                            <td><input type="text" name="modelo[]" class="form-control" placeholder="Modelo"></td>
+                            <td><input type="text" name="udm[]" class="form-control" placeholder="UDM"></td>
+                            <td><input type="text" name="proveedor[]" class="form-control" placeholder="Proveedor"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Contenedor gris a la derecha de la tabla -->
+            <div class="col-md-4" style="float: right; width: 35%;">
+                <div class="container bg-secondary bg-gradient bg-opacity-50">
+                    <div class="container mt-3">
+                        <h3>Acciones / estado actual</h3>
+                        <div class="input-group">
+                            <div>
+                                <label for="cotización" class="form-label">Cotización:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cotización" name="cotización">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="autorización" class="form-label">Autorización:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="autorización" name="autorización">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="oc" class="form-label">OC:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="oc" name="oc">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="estado" class="form-label">Estado:</label>
+                                <input type="text" class="form-control" id="estado" name="estado">
+                            </div>
+                            <div class="w-100 mt-3">
+                                <label for="eta" class="form-label">ETA:</label>
+                                <input type="date" class="form-control" id="eta" name="eta" style="appearance: none; -webkit-appearance: none; -moz-appearance: none; position: relative; z-index: 2;">
+                            </div>
+                            <div>
+                                <label for="facturas" class="form-label">Facturas:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="facturas" name="facturas">
+
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-primary">Generar</button>
+            </div>
+            <!-- Fin del contenedor gris -->
+        </div>
+        <br>
+        <!-- Fin de la fila -->
+    </div>
+    <!-- Fin del contenedor -->
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+</body>
+
+</html>
