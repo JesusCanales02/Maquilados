@@ -25,6 +25,12 @@
         .input-group input {
             flex: 1;
         }
+        
+        .container .bg-secondary {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
     </style>
 </head>
 
@@ -92,6 +98,22 @@
                             <td><input type="text" name="udm[]" class="form-control" placeholder="UDM"></td>
                             <td><input type="text" name="proveedor[]" class="form-control" placeholder="Proveedor"></td>
                         </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input type="text" name="descripcion[]" class="form-control" placeholder="Descripción"></td>
+                            <td><input type="text" name="marca[]" class="form-control" placeholder="Marca"></td>
+                            <td><input type="text" name="modelo[]" class="form-control" placeholder="Modelo"></td>
+                            <td><input type="text" name="udm[]" class="form-control" placeholder="UDM"></td>
+                            <td><input type="text" name="proveedor[]" class="form-control" placeholder="Proveedor"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input type="text" name="descripcion[]" class="form-control" placeholder="Descripción"></td>
+                            <td><input type="text" name="marca[]" class="form-control" placeholder="Marca"></td>
+                            <td><input type="text" name="modelo[]" class="form-control" placeholder="Modelo"></td>
+                            <td><input type="text" name="udm[]" class="form-control" placeholder="UDM"></td>
+                            <td><input type="text" name="proveedor[]" class="form-control" placeholder="Proveedor"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -141,10 +163,10 @@
                                 <input type="date" class="form-control" id="eta" name="eta" style="appearance: none; -webkit-appearance: none; -moz-appearance: none; position: relative; z-index: 2;">
                             </div>
                             <div>
-                                <label for="facturas" class="form-label">Facturas:</label>
-                                <div class="input-group">
+                                <br>
+                                <div>
+                                    <label for="facturas" class="form-label">Facturas:</label>
                                     <input type="text" class="form-control" id="facturas" name="facturas">
-
                                 </div>
                             </div>
                         </div>
