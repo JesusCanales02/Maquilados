@@ -1,0 +1,70 @@
+body{
+    margin:0;
+    padding:0;
+}
+
+h2{
+    font-size: medium;
+}
+
+.BigC{
+    margin-top: 10%;
+    display: flex;
+    justify-content: space-evenly;
+}   
+
+.MedC{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.smallC{
+    display:flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px ;
+}
+
+#oc{
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#hoc{
+    padding-top: 3%;
+
+}
+
+#button1{
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+#button2{
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+.MMedC{
+    display:flex;
+    flex-direction: column;
+
+}
+
+.ssmallC{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
+
+.ssmallC h2{
+    padding-top: 4px;   
+}
+
+#Big2c{
+    margin-top: 50px;
+    width: 90%;
+
+}   
