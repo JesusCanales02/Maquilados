@@ -12,6 +12,10 @@ Definición de rutas
 def formulario_agregar_req():
     return render_template("agregar_req.html")
 
+@app.route("/recibo")
+def formulario_recibo():
+    return render_template("recibo.html")
+
 
 # id, fecha, area, usuario, descripcion, proceso, ETA
 @app.route("/guardar_req", methods=["POST"])
