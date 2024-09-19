@@ -19,35 +19,58 @@
 
         /* Hacer la columna de Descripción más ancha */
         .descripcion-col {
-            width: 25%;
+            width: 20%;
         }
 
         /* Hacer las columnas de Área y Usuario más anchas */
-        .area-col, .usuario-col {
+        .area-col,
+        .usuario-col {
             width: 15%;
         }
 
         /* Hacer las demás columnas ligeramente más anchas */
         .small-col {
-            width: 8%;
+            width: 10%;
         }
 
         /* Ancho personalizado para la columna de Proceso */
         .proceso-col {
-            width: 25%;
+            width: 20%;
         }
 
         .id-col {
-            width: 15%;
+            width: 10%;
+        }
+
+        /* Espaciado entre tabla y contenedor gris */
+        .spacer {
+            margin-right: 20px;
+        }
+
+        /* Aumentar el ancho de la tabla y reducir el del contenedor gris */
+        .table-container {
+            margin-right: 30px; /* Separación entre tabla y contenedor */
+            flex: 0 0 65%; /* Asignar 65% del ancho a la tabla */
+        }
+
+        .info-container {
+            flex: 0 0 30%; /* Asignar 30% del ancho al contenedor gris */
+        }
+
+        /* Asegurar que todo esté alineado */
+        .row {
+            display: flex;
         }
     </style>
+    <h3 class="text-center mb-4">Agregar Requisición</h3>
 </head>
 
 <body>
-    <div class="container mt-4">
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-md-10 mx-auto">
-                <h3 class="text-center mb-4">Agregar Requisición</h3>
+            <!-- Columna para la tabla de requisición -->
+            <div class="table-container">
+                <!--<h3 class="text-center mb-4">Agregar Requisición</h3>-->
 
                 <form action="{{url_for('guardar_req')}}" method="post">
                     <table class="table table-bordered">
@@ -64,22 +87,91 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input required type="text" class="form-control" name="id" id="id" placeholder="Id"></td>
+                                <td><input required type="text" class="form-control" name="id" id="id"
+                                        placeholder="Id"></td>
                                 <td><input required type="date" class="form-control" name="fecha" id="fecha"></td>
-                                <td><input required type="text" class="form-control" name="area" id="area" placeholder="Área"></td>
-                                <td><input required type="text" class="form-control" name="usuario" id="usuario" placeholder="Usuario"></td>
-                                <td><textarea required class="form-control" name="descripcion" id="descripcion" placeholder="Descripción" rows="2"></textarea></td>
-                                <td><input required type="text" class="form-control" name="proceso" id="proceso" placeholder="Proceso"></td>
+                                <td><input required type="text" class="form-control" name="area" id="area"
+                                        placeholder="Área"></td>
+                                <td><input required type="text" class="form-control" name="usuario" id="usuario"
+                                        placeholder="Usuario"></td>
+                                <td><textarea required class="form-control" name="descripcion" id="descripcion"
+                                        placeholder="Descripción" rows="2"></textarea></td>
+                                <td><input required type="text" class="form-control" name="proceso" id="proceso"
+                                        placeholder="Proceso"></td>
                                 <td><input required type="date" class="form-control" name="ETA" id="ETA"></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-outline-success">Guardar</button>
+                        <button type="submit" class="btn btn-outline-success">Generar</button>
                         <a href="{{url_for('requesiciones')}}" class="btn btn-outline-primary">Volver</a>
                     </div>
                 </form>
+            </div>
+
+            <!-- Contenedor gris a la derecha -->
+            <div class="info-container bg-secondary bg-gradient bg-opacity-50 p-3">
+                <h3>Acciones / estado actual</h3>
+                <div class="mb-3">
+                    <label for="cotización" class="form-label">Cotización:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="cotización" name="cotización">
+                        <span class="input-group-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-eye" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                <path
+                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="autorización" class="form-label">Autorización:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="autorización" name="autorización">
+                        <span class="input-group-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-eye" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                <path
+                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="oc" class="form-label">OC:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="oc" name="oc">
+                        <span class="input-group-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-eye" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                <path
+                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado:</label>
+                    <input type="text" class="form-control" id="estado" name="estado">
+                </div>
+                <div class="mb-3">
+                    <label for="eta" class="form-label">ETA:</label>
+                    <input type="date" class="form-control" id="eta" name="eta"
+                        style="appearance: none; -webkit-appearance: none; -moz-appearance: none; position: relative; z-index: 2;">
+                </div>
+                <div class="mb-3">
+                    <label for="facturas" class="form-label">Facturas:</label>
+                    <input type="text" class="form-control" id="facturas" name="facturas">
+                </div>
+                <!--<button type="button" class="btn btn-primary">Generar</button>-->
             </div>
         </div>
     </div>

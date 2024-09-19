@@ -22,7 +22,11 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <div class="d-flex justify-content-end mb-3">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <a href="{{ url_for('formulario_recibo') }}" class="btn btn-outline-success">Recibos</a>
+                        <a href="" class="btn btn-outline-success">Entrega</a>
+                    </div>
                     <a href="{{url_for('formulario_agregar_req')}}" class="btn btn-outline-success">Nueva
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-plus-lg" viewBox="0 0 16 16">
