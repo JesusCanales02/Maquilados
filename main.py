@@ -20,7 +20,6 @@ def formulario_recibo():
 # id, fecha, area, usuario, descripcion, proceso, ETA
 @app.route("/guardar_req", methods=["POST"])
 def guardar_req():
-    id = request.form["id"]
     fecha = request.form["fecha"]
     area = request.form["area"]
     usuario = request.form["usuario"]
@@ -28,6 +27,19 @@ def guardar_req():
     proceso = request.form["proceso"]
     ETA = request.form["ETA"]
     controlador_req.insertar_req(id, fecha, area, usuario, descripcion, proceso, ETA)
+    
+    # Lista de items
+    items = request.form.getlist('items[descripcion][]')  
+    for i in range(len(items)):
+        item_descripcion = request.form.getlist('items[descripcion][]')[i]
+        item_marca = request.form.getlist('items[marca][]')[i]
+        item_modelo = request.form.getlist('items[modelo][]')[i]
+        item_cantidad = request.form.getlist('items[cantidad][]')[i]
+        item_udm = request.form.getlist('items[udm][]')[i]
+        item_proveedor = request.form.getlist('items[proveedor][]')[i]
+        item_oc = request.form.getlist('items[oc][]')[i]
+        
+        controlador_req.insertar_item(id, item_descripcion, item_marca, item_modelo, item_cantidad, item_udm, item_proveedor, item_oc)
     return redirect("/requesiciones")
 
 
