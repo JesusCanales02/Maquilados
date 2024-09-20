@@ -67,11 +67,13 @@
     </style>
 </head>
 
+
 <body>
 
     <div class="container">
         <div class="header">
             <h1>Recibo</h1>
+            <a href="{{url_for('requesiciones')}}" class="btn btn-outline-primary">Volver</a>
         </div>
 
         <form class="form-inline row mb-4">
@@ -114,12 +116,12 @@
         </form>
 
         <div class="buttons mb-3">
-            <button type="button" class="btn btn-primary">Buscar</button>
-            <button type="button" class="btn btn-success">Procesar</button>
+            <button type="button" class="btn btn-outline-primary">Buscar</button>
+            <button type="button" class="btn btn-outline-success">Procesar</button>
         </div>
 
         <div class="table-container">
-            <table class="table table-striped table-bordered">
+            <table class="table table-bordered">
                 <thead class="">
                     <tr>
                         <th>Linea</th>
