@@ -5,8 +5,8 @@ from bd import obtener_conexion
 def insertar_req(id, fecha, area, usuario, descripcion, proceso, ETA):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("INSERT INTO usuarios(id, fecha, area, usuario, descripcion, proceso, ETA) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-               (id, fecha, area, usuario, descripcion, proceso, ETA))
+        cursor.execute("INSERT INTO usuarios(fecha, area, usuario, descripcion, proceso, ETA) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+               (fecha, area, usuario, descripcion, proceso, ETA))
     conexion.commit()
     conexion.close()
 
@@ -45,5 +45,13 @@ def actualizar_req(id, fecha, area, usuario, descripcion, proceso, ETA):
     with conexion.cursor() as cursor:
         cursor.execute("UPDATE usuarios SET fecha = %s, area = %s, usuario = %s, descripcion = %s, proceso = %s, ETA = %s WHERE id = %s",
                        (fecha, area, usuario, descripcion, proceso, ETA, id))
+    conexion.commit()
+    conexion.close()
+    
+def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("INSERT INTO items (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                       (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc))
     conexion.commit()
     conexion.close()
