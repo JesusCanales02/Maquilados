@@ -55,3 +55,4 @@ def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, pro
                        (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc))
     conexion.commit()
     conexion.close()
+
