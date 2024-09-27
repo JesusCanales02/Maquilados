@@ -73,52 +73,34 @@
     <div class="container">
         <div class="header">
             <h1>Recibo</h1>
-            <a href="{{url_for('requesiciones')}}" class="btn btn-outline-primary">Volver</a>
+            <a href="{{url_for('requesiciones')}}" class="btn btn-warning">Volver</a>
         </div>
 
-        <form class="form-inline row mb-4">
+        <form class="form-inline row mb-4" method="POST" action="{{ url_for('filtrar_recibo') }}">
             <div class="col-md-6">
                 <label for="oc" class="form-label">OC</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="oc" placeholder="Orden de Compra">
-                    <span class="input-group-text">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-eye" viewBox="0 0 16 16">
-                            <path
-                                d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                            <path
-                                d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
-                        </svg>
-                    </span>
+                    <input type="text" class="form-control" id="oc" name="oc" placeholder="Orden de Compra">
                 </div>
             </div>
-
+        
             <div class="col-md-6">
                 <label for="solicitante" class="form-label">Solicitante</label>
-                <input type="text" class="form-control" id="solicitante" placeholder="Nombre del solicitante">
+                <input type="text" class="form-control" id="solicitante" name="solicitante" placeholder="Nombre del solicitante">
             </div>
-
+        
             <div class="col-md-6 mt-3">
                 <label for="cotizacion" class="form-label">Cotización</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="cotizacion" placeholder="Número de cotización">
-                    <span class="input-group-text">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-eye" viewBox="0 0 16 16">
-                            <path
-                                d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                            <path
-                                d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
-                        </svg>
-                    </span>
+                    <input type="text" class="form-control" id="cotizacion" name="cotizacion" placeholder="Número de cotización">
                 </div>
             </div>
+        
+            <div class="buttons mt-3">
+                <button type="submit" class="btn btn-warning">Buscar</button>
+            </div>
         </form>
-
-        <div class="buttons mb-3">
-            <button type="button" class="btn btn-outline-primary">Buscar</button>
-            <button type="button" class="btn btn-outline-success">Procesar</button>
-        </div>
+        
 
         <div class="table-container">
             <table class="table table-bordered">
@@ -136,40 +118,29 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for item in items %}
                     <tr>
-                        <td>1</td>
-                        <td>Producto</td>
-                        <td>Marca </td>
-                        <td>Modelo </td>
-                        <td>5</td>
-                        <td>Unidad</td>
-                        <td>Proveedor </td>
+                        <td>{{ loop.index }}</td> 
+                        <td>{{ item['descripcion'] }}</td> 
+                        <td>{{ item['marca'] }}</td> 
+                        <td>{{ item['modelo'] }}</td> 
+                        <td>{{ item['cantidad'] }}</td> 
+                        <td>{{ item['udm'] }}</td> 
+                        <td>{{ item['proveedor'] }}</td> 
                         <td>
                             <select class="form-select">
-                                <option selected>Seleccionar</option>
-                                <option>Parcial</option>
-                                <option>Recibido</option>
+                                <option {% if item['estado'] == 'Seleccionar' %}selected{% endif %}>Seleccionar</option>
+                                <option {% if item['estado'] == 'Parcial' %}selected{% endif %}>Parcial</option>
+                                <option {% if item['estado'] == 'Recibido' %}selected{% endif %}>Recibido</option>
                             </select>
                         </td>
-                        <td><input type="text" class="form-control" value="3"></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Producto </td>
-                        <td>Marca </td>
-                        <td>Modelo </td>
-                        <td>5</td>
-                        <td>Unidad</td>
-                        <td>Proveedor</td>
+                        <td><input type="text" class="form-control" value="{{ item['parcial'] }}"></td> 
                         <td>
-                            <select class="form-select">
-                                <option selected>Seleccionar</option>
-                                <option>Parcial</option>
-                                <option>Recibido</option>
-                            </select>
-                        </td>
-                        <td><input type="text" class="form-control" value="2"></td>
+                         
+                        </td> 
+                        
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

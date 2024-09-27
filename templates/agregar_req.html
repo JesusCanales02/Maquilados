@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <br>
+    <br>
     <title>Agregar Requisición</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,7 +19,7 @@
         }
 
         .descripcion-col {
-            width: 15%;
+            width: 10%;
         }
 
         .area-col,
@@ -60,15 +62,39 @@
         .oc {
             width: 5%;
         }
+
+        .remove-btn {
+            text-align: center;
+        }
     </style>
     <h3 class="text-center mb-4">Agregar Requisición</h3>
 </head>
 
 <body>
     <div class="container mt-5">
-        <div class="row">
-            <div class="table-container">
-                <form action="{{url_for('guardar_req')}}" method="post">
+        <form action="{{url_for('guardar_req')}}" method="post">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <label for="id_requisicion" class="form-label">ID Requisición</label>
+                    <input type="text" class="form-control" id="id_requisicion" name="id_requisicion" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="fecha_solicitud" class="form-label">Fecha de Solicitud</label>
+                    <input type="date" class="form-control" id="fecha_solicitud" name="fecha_solicitud" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="solicitante" class="form-label">Solicitante</label>
+                    <input type="text" class="form-control" id="solicitante" name="solicitante" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="descripcion_general" class="form-label">Descripción</label>
+                    <input type="text" class="form-control" id="descripcion_general" name="descripcion_general" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Tabla de ítems -->
+                <div class="table-container">
                     <table class="table table-bordered" id="requisicionTable">
                         <thead>
                             <tr>
@@ -80,6 +106,7 @@
                                 <th class="proceso-col">UDM</th>
                                 <th class="small-col">Proveedor</th>
                                 <th class="oc-col">OC</th>
+                                <th class="remove-btn"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,114 +119,112 @@
                                 <td><input required type="text" class="form-control" name="udm[]" placeholder="UDM"></td>
                                 <td><input required type="text" class="form-control" name="proveedor[]" placeholder="Proveedor"></td>
                                 <td><input required type="text" class="form-control" name="oc[]" placeholder="OC"></td>
+                                <td><button type="button" class="btn btn-warning">Eliminar</button></td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <!-- Botones -->
+                    <!-- Botones para añadir o eliminar filas -->
+                    <!-- Botones para enviar el formulario -->
                     <div class="d-flex mb-3">
-                        <button type="button" class="btn btn-outline-secondary me-2" id="addRowBtn">Añadir</button>
-                        <button type="button" class="btn btn-outline-danger" id="deleteRowBtn">Eliminar fila</button>
+                        <button type="button" class="btn btn-warning me-2" id="addRowBtn">Añadir</button>
                     </div>
-
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-outline-success">Generar</button>
-                        <a href="{{url_for('requesiciones')}}" class="btn btn-outline-primary">Volver</a>
+                        <button type="submit" class="btn btn-warning">Generar</button>
+                        <a href="{{url_for('requesiciones')}}" class="btn btn-warning">Volver</a>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <!-- Contenedor gris a la derecha -->
-            <div class="info-container bg-secondary bg-gradient bg-opacity-50 p-3">
-                <h3>Acciones / estado actual</h3>
-                <div class="mb-3">
-                    <label for="cotización" class="form-label">Cotización:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="cotización" name="cotización">
-                        <span class="input-group-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-eye" viewBox="0 0 16 16">
-                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
-                            </svg>
-                        </span>
+                <!-- Contenedor gris a la derecha -->
+                <div class="info-container bg-secondary bg-gradient bg-opacity-50 p-3">
+                    <h3>Acciones / estado actual</h3>
+                    <div class="mb-3">
+                        <label for="cotización" class="form-label">Cotización:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="cotización" name="cotización">
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="autorización" class="form-label">Autorización:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="autorización" name="autorización">
-                        <span class="input-group-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-eye" viewBox="0 0 16 16">
-                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
-                            </svg>
-                        </span>
+                    <div class="mb-3">
+                        <label for="autorización" class="form-label">Autorización:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="autorización" name="autorización">
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="oc" class="form-label">OC:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="oc" name="oc">
-                        <span class="input-group-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-eye" viewBox="0 0 16 16">
-                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
-                            </svg>
-                        </span>
+                    <div class="mb-3">
+                        <label for="oc" class="form-label">OC:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="oc" name="oc">
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="estado" class="form-label">Estado:</label>
-                    <select class="form-select">
-                        <option selected>Seleccionar</option>
-                        <option>Parcial</option>
-                        <option>Recibido</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="eta" class="form-label">ETA:</label>
-                    <input type="date" class="form-control" id="eta" name="eta"
-                        style="appearance: none; -webkit-appearance: none; -moz-appearance: none; position: relative; z-index: 2;">
-                </div>
-                <div class="mb-3">
-                    <label for="facturas" class="form-label">Facturas:</label>
-                    <input type="text" class="form-control" id="facturas" name="facturas">
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <select class="form-select" name="estado">
+                            <option selected>Seleccionar</option>
+                            <option>Parcial</option>
+                            <option>Recibido</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="eta" class="form-label">ETA:</label>
+                        <input type="date" class="form-control" id="eta" name="eta">
+                    </div>
+                    <div class="mb-3">
+                        <label for="facturas" class="form-label">Facturas:</label>
+                        <input type="text" class="form-control" id="facturas" name="facturas">
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQ+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 
     <script>
+        // Añadir una nueva fila a la tabla
         document.getElementById("addRowBtn").addEventListener("click", function () {
             const table = document.getElementById("requisicionTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
-            const columns = ['descripcion', 'marca', 'modelo', 'cantidad', 'UDM', 'proveedor', 'OC'];
-
+            const columns = ['descripcion', 'marca', 'modelo', 'cantidad', 'udm', 'proveedor', 'oc'];
+        
             newRow.insertCell(0).innerHTML = table.rows.length;
-
+        
             columns.forEach(function (name) {
                 const cell = newRow.insertCell();
                 cell.innerHTML = `<input required type="text" class="form-control" name="${name}[]" placeholder="${name.charAt(0).toUpperCase() + name.slice(1)}">`;
             });
+        
+            // Agregar botón de eliminar en la nueva fila
+            const removeCell = newRow.insertCell();
+            removeCell.innerHTML = `<button type="button" class="btn btn-warning removeRowBtn">Eliminar</button>`;
+            addRemoveRowEvent(removeCell.querySelector('.removeRowBtn'));
         });
+        
+        // Añadir evento para eliminar una fila
+        function addRemoveRowEvent(button) {
+            button.addEventListener('click', function () {
+                const row = button.closest('tr');
+                row.remove();
+                updateLineNumbers();
+            });
+        }
 
-        document.getElementById("deleteRowBtn").addEventListener("click", function () {
-            const table = document.getElementById("requisicionTable").getElementsByTagName('tbody')[0];
-            // Nos asegurarse de que no se eliminen todas las filas
-            if (table.rows.length > 1) { 
-                table.deleteRow(table.rows.length - 1);
-            }
+        // Actualizar números de línea después de eliminar una fila
+        function updateLineNumbers() {
+            const rows = document.querySelectorAll("#requisicionTable tbody tr");
+            rows.forEach((row, index) => {
+                row.cells[0].innerText = index + 1;
+            });
+        }
+
+        document.querySelectorAll('.removeRowBtn').forEach(function (button) {
+            addRemoveRowEvent(button);
         });
     </script>
+    <br>
 </body>
 
 </html>
