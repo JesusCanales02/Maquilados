@@ -45,14 +45,11 @@
 
         .table-container {
             margin-right: 20px;
-            /* Separación entre tabla y contenedor */
             flex: 0 0 80%;
-            /* Asignar 80% del ancho a la tabla */
         }
 
         .info-container {
             flex: 0 0 18%;
-            /* Asignar 18% del ancho al contenedor gris */
         }
 
         .row {
@@ -72,7 +69,10 @@
 
 <body>
     <div class="container mt-5">
-        <form action="{{url_for('guardar_req')}}" method="post">
+        <!-- Formulario para agregar requisición -->
+        <form action="{{ url_for('guardar_req') }}" method="post">
+
+            <!-- Sección principal de datos de la requisición -->
             <div class="row mb-4">
                 <div class="col-md-3">
                     <label for="id_requisicion" class="form-label">ID Requisición</label>
@@ -92,8 +92,8 @@
                 </div>
             </div>
 
+            <!-- Tabla para ingresar los ítems de la requisición -->
             <div class="row">
-                <!-- Tabla de ítems -->
                 <div class="table-container">
                     <table class="table table-bordered" id="requisicionTable">
                         <thead>
@@ -124,36 +124,37 @@
                         </tbody>
                     </table>
 
-                    <!-- Botones para añadir o eliminar filas -->
-                    <!-- Botones para enviar el formulario -->
+                    <!-- Botones para añadir ítems -->
                     <div class="d-flex mb-3">
                         <button type="button" class="btn btn-warning me-2" id="addRowBtn">Añadir</button>
                     </div>
+
+                    <!-- Botones para enviar el formulario -->
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-warning">Generar</button>
-                        <a href="{{url_for('requesiciones')}}" class="btn btn-warning">Volver</a>
+                        <a href="{{ url_for('requesiciones') }}" class="btn btn-warning">Volver</a>
                     </div>
                 </div>
 
-                <!-- Contenedor gris a la derecha -->
+                <!-- Contenedor de información adicional / estado actual -->
                 <div class="info-container bg-secondary bg-gradient bg-opacity-50 p-3">
                     <h3>Acciones / estado actual</h3>
                     <div class="mb-3">
-                        <label for="cotización" class="form-label">Cotización:</label>
+                        <label for="cotizacion" class="form-label">Cotización:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="cotización" name="cotización">
+                            <input type="text" class="form-control" id="cotizacion" name="cotizacion" placeholder="Cotización" required>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="autorización" class="form-label">Autorización:</label>
+                        <label for="autorizacion" class="form-label">Autorización:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="autorización" name="autorización">
+                            <input type="text" class="form-control" id="autorizacion" name="autorizacion" placeholder="Autorización" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="oc" class="form-label">OC:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="oc" name="oc">
+                            <input type="text" class="form-control" id="oc" name="oc" placeholder="Orden de Compra" required>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -166,11 +167,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="eta" class="form-label">ETA:</label>
-                        <input type="date" class="form-control" id="eta" name="eta">
+                        <input type="date" class="form-control" id="eta" name="eta" required>
                     </div>
                     <div class="mb-3">
                         <label for="facturas" class="form-label">Facturas:</label>
-                        <input type="text" class="form-control" id="facturas" name="facturas">
+                        <input type="text" class="form-control" id="facturas" name="facturas" placeholder="Facturas" required>
                     </div>
                 </div>
             </div>
@@ -224,7 +225,6 @@
             addRemoveRowEvent(button);
         });
     </script>
-    <br>
 </body>
 
 </html>

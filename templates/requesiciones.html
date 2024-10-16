@@ -25,7 +25,7 @@
                 <div class="d-flex justify-content-between mb-3">
                     <div>
                         <a href="{{ url_for('formulario_recibo') }}" class="btn btn-warning">Recibos</a>
-                        <a href="" class="btn btn-warning">Entrega</a>
+                        <a href="{{ url_for('formulario_entregas') }}" class="btn btn-warning">Entrega</a>
                     </div>
                     <a href="{{url_for('formulario_agregar_req')}}" class="btn btn-warning">Nueva
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -41,7 +41,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="id-col">Id</th>
+                            <th class="id-col">Id_requisicion</th>
                             <th>Fecha</th>
                             <th>Área</th>
                             <th>Usuario</th>
