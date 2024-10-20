@@ -101,6 +101,13 @@
 
 #     conexion.close()
 #     return items
+
+
+
+# ----------
+
+
+
 from bd import obtener_conexion
 
 
@@ -173,17 +180,31 @@ def actualizar_req(id, fecha, area, usuario, descripcion, proceso, ETA):
 #         """, (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion))
 #     conexion.commit()
 #     conexion.close()
+
+# Insertar requisición y obtener el ID recién generado
 def insertar_requisicion(fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas):
-    conexion = obtener_conexion()  # Conexión a la base de datos
+    conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("""
-            INSERT INTO requisiciones (fecha, usuario, descripcion, cotizacion, autorizacion, OC, estado, eta, facturas) 
+            INSERT INTO requisiciones (fecha, usuario, descripcion, cotizacion, autorizacion, OC, estado, eta, facturas)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas))
-        requisicion_id = cursor.lastrowid  # Obtén el ID generado para la nueva requisición
-    conexion.commit()  # Guardar los cambios
-    conexion.close()  # Cerrar la conexión
-    return requisicion_id  # Retorna el ID generado
+    conexion.commit()
+    requisicion_id = cursor.lastrowid  # Obtener el ID de la requisición recién insertada
+    conexion.close()
+    return requisicion_id  # Devolver el ID de la nueva requisición
+
+
+def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""
+            INSERT INTO items (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion))
+    conexion.commit()
+    conexion.close()
+
 
 def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion):
     conexion = obtener_conexion()

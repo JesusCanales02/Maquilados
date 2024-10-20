@@ -103,6 +103,10 @@
 
 # if __name__ == "__main__":
 #     app.run(host='0.0.0.0', port=8000, debug=True)
+
+
+# --------------------
+
 from flask import Flask, render_template, request, redirect, flash
 from flask import Flask, render_template, request, redirect, url_for, flash
 
@@ -189,7 +193,7 @@ def guardar_req():
     proveedores = request.form.getlist('proveedor[]')
     ocs = request.form.getlist('oc[]')
 
-    # Insertar los ítems en la tabla items
+    # Insertar los ítems en la tabla items asociados con la requisición
     for i in range(len(descripciones)):
         descripcion_item = descripciones[i]
         marca = marcas[i]
@@ -199,10 +203,11 @@ def guardar_req():
         proveedor = proveedores[i]
         oc = ocs[i]
 
-        # Asociar los ítems con la requisición insertada
+        # Insertar cada ítem asociado a la requisición con los mismos valores de cotizacion, autorizacion y oc
         controlador_req.insertar_item(requisicion_id, descripcion_item, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion)
-    
+
     return redirect("/requesiciones")
+
 
 
 @app.route("/")
