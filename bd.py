@@ -5,8 +5,8 @@ def obtener_conexion():
         host="127.0.0.1",      
         user="root",         
         password="",           
-        db="init",  
-        port=3305,            
+        db="smi_mx",  
+        port=3306,            
         charset='utf8mb4',    
         cursorclass=pymysql.cursors.DictCursor  
     )
