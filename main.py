@@ -267,28 +267,166 @@
 
 
 # #------------------------------------------------------------------------------------------
-from flask import Flask, render_template, request, redirect, url_for, flash
+# from flask import Flask, render_template, request, redirect, url_for, flash
+# import controlador_req
+
+# app = Flask(__name__)
+
+# @app.route("/agregar_req")
+# def formulario_agregar_req():
+#     return render_template("agregar_req.html")
+
+# @app.route("/recibo")
+# def formulario_recibo():
+#     items = controlador_req.obtener_items() 
+#     return render_template("recibo.html", items=items)
+    
+
+# @app.route("/entregas")
+# def formulario_entregas():
+#     return render_template("entregas.html")
+
+# # Ruta para guardar una nueva requisición
+# @app.route("/guardar_req", methods=["POST"])
+# def guardar_req():
+#     # Capturamos los valores del formulario
+#     fecha = request.form.get("fecha_solicitud")
+#     usuario = request.form.get("usuario")
+#     descripcion = request.form.get("descripcion_general")
+#     cotizacion = request.form.get("cotizacion")
+#     autorizacion = request.form.get("autorizacion")
+#     oc = request.form.get("oc")
+#     estado = request.form.get("estado")
+#     eta = request.form.get("eta")
+#     facturas = request.form.get("facturas")
+
+#     # Insertar la requisición en la tabla requisiciones
+#     requisicion_id = controlador_req.insertar_requisicion(fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas)
+
+#     # Capturamos los ítems de la requisición
+#     descripciones = request.form.getlist('descripcion[]')
+#     marcas = request.form.getlist('marca[]')
+#     modelos = request.form.getlist('modelo[]')
+#     cantidades = request.form.getlist('cantidad[]')
+#     udms = request.form.getlist('udm[]')
+#     proveedores = request.form.getlist('proveedor[]')
+#     ocs = request.form.getlist('oc[]')
+
+#     # Insertar los ítems en la tabla items asociados con la requisición
+#     for i in range(len(descripciones)):
+#         controlador_req.insertar_item(requisicion_id, descripciones[i], marcas[i], modelos[i], cantidades[i], udms[i], proveedores[i], ocs[i], cotizacion, autorizacion)
+
+#     return redirect("/requesiciones")
+
+# @app.route("/")
+# @app.route("/requesiciones")
+# def requesiciones():
+#     requisiciones = controlador_req.obtener_requisiciones()
+#     return render_template("requesiciones.html", requisiciones=requisiciones)
+
+# @app.route("/eliminar_req", methods=["POST"])
+# def eliminar_req():
+#     controlador_req.eliminar_requisicion(request.form["id"])
+#     return redirect("/requesiciones")
+
+# @app.route("/formulario_editar_req/<int:id>")
+# def editar_req(id):
+#     requisicion = controlador_req.obtener_requisicion_por_id(id)
+#     return render_template("editar_req.html", requisicion=requisicion)
+
+# @app.route("/actualizar_req", methods=["POST"])
+# def actualizar_req():
+#     id = request.form["id"]
+#     fecha = request.form["fecha"]
+#     usuario = request.form["usuario"]
+#     descripcion = request.form["descripcion"]
+#     cotizacion = request.form["cotizacion"]
+#     autorizacion = request.form["autorizacion"]
+#     oc = request.form["oc"]
+#     estado = request.form["estado"]
+#     eta = request.form["eta"]
+#     facturas = request.form["facturas"]
+
+#     controlador_req.actualizar_requisicion(id, fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas)
+#     return redirect("/requesiciones")
+
+# # Ruta para filtrar recibos
+# @app.route("/recibo", methods=["GET", "POST"])
+# def filtrar_recibo():
+#     oc = request.form.get("oc")
+#     cotizacion = request.form.get("cotizacion")
+
+#     items = controlador_req.obtener_items_filtrados(oc, cotizacion)
+#     return render_template("recibo.html", items=items)
+
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=8000, debug=True)
+
+#-----------------------------------------------------------------------
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import controlador_req
+from bd import obtener_conexion
 
 app = Flask(__name__)
+app.secret_key = 'tu_clave_secreta_aqui'  # Necesario para manejar sesiones
+
+
+# Ruta principal redirige al login
+@app.route('/')
+def index():
+    if 'empleado_id' in session:  # Si ya hay un empleado logueado
+        return redirect(url_for('requesiciones'))  # Redirigir a requisiciones
+    return redirect(url_for('login'))  # Redirigir al login si no está logueado
+
+# Ruta para el login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        no_empleado = request.form['noEmpleado']  # Capturamos el número de empleado
+        # Conectar a la base de datos y verificar el número de empleado en la tabla 'empleado'
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            cursor.execute("SELECT * FROM empleado WHERE idEmpleado = %s", (no_empleado,))
+            empleado = cursor.fetchone()  # Verificamos si existe el empleado
+        
+        conexion.close()
+
+        if empleado:
+            session['empleado_id'] = no_empleado  # Guardamos el número de empleado en la sesión
+            return redirect(url_for('requesiciones'))  # Redirige a requisiciones si es correcto
+        else:
+            flash('Número de empleado incorrecto', 'danger')  # Mensaje de error si es incorrecto
+    return render_template('login.html')
+
+@app.route("/logout")
+def logout():
+    session.pop('empleado_id', None)  # Limpiar la sesión del empleado
+    return redirect(url_for('login'))  # Redirigir al login después de salir
 
 @app.route("/agregar_req")
 def formulario_agregar_req():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     return render_template("agregar_req.html")
 
 @app.route("/recibo")
 def formulario_recibo():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     items = controlador_req.obtener_items() 
     return render_template("recibo.html", items=items)
-    
 
 @app.route("/entregas")
 def formulario_entregas():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     return render_template("entregas.html")
 
 # Ruta para guardar una nueva requisición
 @app.route("/guardar_req", methods=["POST"])
 def guardar_req():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     # Capturamos los valores del formulario
     fecha = request.form.get("fecha_solicitud")
     usuario = request.form.get("usuario")
@@ -318,24 +456,31 @@ def guardar_req():
 
     return redirect("/requesiciones")
 
-@app.route("/")
 @app.route("/requesiciones")
 def requesiciones():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     requisiciones = controlador_req.obtener_requisiciones()
     return render_template("requesiciones.html", requisiciones=requisiciones)
 
 @app.route("/eliminar_req", methods=["POST"])
 def eliminar_req():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     controlador_req.eliminar_requisicion(request.form["id"])
     return redirect("/requesiciones")
 
 @app.route("/formulario_editar_req/<int:id>")
 def editar_req(id):
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     requisicion = controlador_req.obtener_requisicion_por_id(id)
     return render_template("editar_req.html", requisicion=requisicion)
 
 @app.route("/actualizar_req", methods=["POST"])
 def actualizar_req():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     id = request.form["id"]
     fecha = request.form["fecha"]
     usuario = request.form["usuario"]
@@ -353,6 +498,8 @@ def actualizar_req():
 # Ruta para filtrar recibos
 @app.route("/recibo", methods=["GET", "POST"])
 def filtrar_recibo():
+    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
+        return redirect(url_for('login'))  # Si no, redirigir al login
     oc = request.form.get("oc")
     cotizacion = request.form.get("cotizacion")
 
