@@ -267,22 +267,214 @@
 
 #----------------------------------------------------------------
 
+# from bd import obtener_conexion
+
+
+# # Insertar requisición y obtener el ID recién generado
+# def insertar_requisicion(fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("""
+#             INSERT INTO requisiciones (fecha, usuario, descripcion, cotizacion, autorizacion, OC, estado, eta, facturas)
+#             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+#         """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas))
+#     conexion.commit()
+#     requisicion_id = cursor.lastrowid  # Obtener el ID de la requisición recién insertada
+#     conexion.close()
+#     return requisicion_id  # Devolver el ID de la nueva requisición
+
+
+# # Insertar ítems para una requisición dada
+# def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("""
+#             INSERT INTO items (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion)
+#             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#         """, (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion))
+#     conexion.commit()
+#     conexion.close()
+
+# # Obtener todas las requisiciones
+# def obtener_requisiciones():
+#     conexion = obtener_conexion()
+#     requisiciones = []
+#     with conexion.cursor() as cursor:
+#         cursor.execute("SELECT id, fecha, usuario, descripcion, cotizacion, autorizacion, OC, estado, eta, facturas FROM requisiciones")
+#         requisiciones = cursor.fetchall()
+#     conexion.close()
+#     return requisiciones
+
+# # Eliminar una requisición por ID
+# def eliminar_requisicion(id):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("DELETE FROM requisiciones WHERE id = %s", (id,))
+#     conexion.commit()
+#     conexion.close()
+
+# # Obtener requisición por ID
+# def obtener_requisicion_por_id(id):
+#     conexion = obtener_conexion()
+#     requisicion = None
+#     with conexion.cursor() as cursor:
+#         cursor.execute("SELECT * FROM requisiciones WHERE id = %s", (id,))
+#         requisicion = cursor.fetchone()
+#     conexion.close()
+#     return requisicion
+
+# # Actualizar una requisición
+# def actualizar_requisicion(id, fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("""
+#             UPDATE requisiciones SET fecha = %s, usuario = %s, descripcion = %s, cotizacion = %s, autorizacion = %s, OC = %s, estado = %s, eta = %s, facturas = %s
+#             WHERE id = %s
+#         """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas, id))
+#     conexion.commit()
+#     conexion.close()
+
+# def obtener_items():
+#     conexion = obtener_conexion()
+#     items = []
+#     with conexion.cursor() as cursor:
+#         cursor.execute("SELECT * FROM items")  # Ajusta la consulta según la estructura de tu base de datos
+#         items = cursor.fetchall()
+#     conexion.close()
+#     return items
+
+
+# # Obtener ítems filtrados por OC o cotización
+# def obtener_items_filtrados(oc, cotizacion):
+#     conexion = obtener_conexion()
+#     query = "SELECT * FROM items WHERE 1=1"
+#     params = []
+
+#     if oc:
+#         query += " AND oc = %s"
+#         params.append(oc)
+
+#     if cotizacion:
+#         query += " AND cotizacion = %s"
+#         params.append(cotizacion)
+
+#     with conexion.cursor() as cursor:
+#         cursor.execute(query, tuple(params))
+#         items = cursor.fetchall()
+
+#     conexion.close()
+#     return items
+# #--------------------------------------------------------------- por si acaso
+# from bd import obtener_conexion
+
+# # Insertar requisición y obtener el ID recién generado
+# def insertar_requisicion(fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("""
+#             INSERT INTO requisiciones (fecha, usuario, descripcion, cotizacion, autorizacion, OC, proceso, eta, facturas)
+#             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+#         """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas))
+#     conexion.commit()
+#     requisicion_id = cursor.lastrowid  # Obtener el ID de la requisición recién insertada
+#     conexion.close()
+#     return requisicion_id  # Devolver el ID de la nueva requisición
+
+# # Insertar ítems para una requisición dada
+# def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("""
+#             INSERT INTO items (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion)
+#             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#         """, (requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion))
+#     conexion.commit()
+#     conexion.close()
+
+# # Obtener todas las requisiciones
+# def obtener_requisiciones():
+#     conexion = obtener_conexion()
+#     requisiciones = []
+#     with conexion.cursor() as cursor:
+#         cursor.execute("SELECT id, fecha, usuario, descripcion, cotizacion, autorizacion, OC, proceso, eta, facturas FROM requisiciones")
+#         requisiciones = cursor.fetchall()
+#     conexion.close()
+#     return requisiciones
+
+# # Eliminar una requisición por ID
+# def eliminar_requisicion(id):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("DELETE FROM requisiciones WHERE id = %s", (id,))
+#     conexion.commit()
+#     conexion.close()
+
+# # Obtener requisición por ID
+# def obtener_requisicion_por_id(id):
+#     conexion = obtener_conexion()
+#     requisicion = None
+#     with conexion.cursor() as cursor:
+#         cursor.execute("SELECT * FROM requisiciones WHERE id = %s", (id,))
+#         requisicion = cursor.fetchone()
+#     conexion.close()
+#     return requisicion
+
+# # Actualizar una requisición
+# def actualizar_requisicion(id, fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas):
+#     conexion = obtener_conexion()
+#     with conexion.cursor() as cursor:
+#         cursor.execute("""
+#             UPDATE requisiciones SET fecha = %s, usuario = %s, descripcion = %s, cotizacion = %s, autorizacion = %s, OC = %s, proceso = %s, eta = %s, facturas = %s
+#             WHERE id = %s
+#         """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas, id))
+#     conexion.commit()
+#     conexion.close()
+
+# def obtener_items():
+#     conexion = obtener_conexion()
+#     items = []
+#     with conexion.cursor() as cursor:
+#         cursor.execute("SELECT * FROM items")  # Ajusta la consulta según la estructura de tu base de datos
+#         items = cursor.fetchall()
+#     conexion.close()
+#     return items
+
+# # Obtener ítems filtrados por OC o cotización
+# def obtener_items_filtrados(oc, cotizacion):
+#     conexion = obtener_conexion()
+#     query = "SELECT * FROM items WHERE 1=1"
+#     params = []
+
+#     if oc:
+#         query += " AND oc = %s"
+#         params.append(oc)
+
+#     if cotizacion:
+#         query += " AND cotizacion = %s"
+#         params.append(cotizacion)
+
+#     with conexion.cursor() as cursor:
+#         cursor.execute(query, tuple(params))
+#         items = cursor.fetchall()
+
+#     conexion.close()
+#     return items
+#------------------------------------------------------------------------------------------funciona muy bien y el ultimo
+
 from bd import obtener_conexion
 
-
 # Insertar requisición y obtener el ID recién generado
-def insertar_requisicion(fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas):
+def insertar_requisicion(fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("""
-            INSERT INTO requisiciones (fecha, usuario, descripcion, cotizacion, autorizacion, OC, estado, eta, facturas)
+            INSERT INTO requisiciones (fecha, usuario, descripcion, cotizacion, autorizacion, OC, proceso, eta, facturas)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas))
+        """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas))
     conexion.commit()
     requisicion_id = cursor.lastrowid  # Obtener el ID de la requisición recién insertada
     conexion.close()
     return requisicion_id  # Devolver el ID de la nueva requisición
-
 
 # Insertar ítems para una requisición dada
 def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, cotizacion, autorizacion):
@@ -295,12 +487,22 @@ def insertar_item(requisicion_id, descripcion, marca, modelo, cantidad, udm, pro
     conexion.commit()
     conexion.close()
 
+# Obtener ítems para una requisición específica
+def obtener_items_por_requisicion(requisicion_id):
+    conexion = obtener_conexion()
+    items = []
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT * FROM items WHERE requisicion_id = %s", (requisicion_id,))
+        items = cursor.fetchall()
+    conexion.close()
+    return items
+
 # Obtener todas las requisiciones
 def obtener_requisiciones():
     conexion = obtener_conexion()
     requisiciones = []
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT id, fecha, usuario, descripcion, cotizacion, autorizacion, OC, estado, eta, facturas FROM requisiciones")
+        cursor.execute("SELECT id, fecha, usuario, descripcion, cotizacion, autorizacion, OC, proceso, eta, facturas FROM requisiciones")
         requisiciones = cursor.fetchall()
     conexion.close()
     return requisiciones
@@ -323,17 +525,17 @@ def obtener_requisicion_por_id(id):
     conexion.close()
     return requisicion
 
-# Actualizar una requisición
-def actualizar_requisicion(id, fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas):
+def actualizar_requisicion(id, fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("""
-            UPDATE requisiciones SET fecha = %s, usuario = %s, descripcion = %s, cotizacion = %s, autorizacion = %s, OC = %s, estado = %s, eta = %s, facturas = %s
+            UPDATE requisiciones SET fecha = %s, usuario = %s, descripcion = %s, cotizacion = %s, autorizacion = %s, OC = %s, proceso = %s, eta = %s, facturas = %s
             WHERE id = %s
-        """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, estado, eta, facturas, id))
+        """, (fecha, usuario, descripcion, cotizacion, autorizacion, oc, proceso, eta, facturas, id))
     conexion.commit()
     conexion.close()
 
+# Obtener todos los ítems
 def obtener_items():
     conexion = obtener_conexion()
     items = []
@@ -342,7 +544,6 @@ def obtener_items():
         items = cursor.fetchall()
     conexion.close()
     return items
-
 
 # Obtener ítems filtrados por OC o cotización
 def obtener_items_filtrados(oc, cotizacion):

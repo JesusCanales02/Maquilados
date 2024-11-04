@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <br>
+    <br>
     <title>Editar Requisición</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -9,55 +11,220 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <style>
+        table input,
+        table textarea {
+            width: 100%;
+        }
+
+        .descripcion-col {
+            width: 10%;
+        }
+
+        .area-col,
+        .usuario-col {
+            width: 12%;
+        }
+
+        .small-col {
+            width: 12%;
+        }
+
+        .proceso-col {
+            width: 12%;
+        }
+
+        .id-col {
+            width: 10%;
+        }
+
+        .spacer {
+            margin-right: 20px;
+        }
+
+        .table-container {
+            margin-right: 20px;
+            flex: 0 0 80%;
+        }
+
+        .info-container {
+            flex: 0 0 18%;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .oc {
+            width: 5%;
+        }
+
+        .remove-btn {
+            text-align: center;
+        }
+    </style>
+    <h3 class="text-center mb-4">Editar Requisición</h3>
 </head>
 
 <body>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-10 mx-auto">
-                <h3 class="text-center mb-4">Editar Requisición</h3>
+    <div class="container mt-5">
+        <form action="{{ url_for('actualizar_req') }}" method="post">
+            <input type="hidden" name="id" value="{{ requisicion['id'] }}">
 
-                <form action="{{url_for('actualizar_req')}}" method="post">
-                    <input type="hidden" name="id" value="{{requesicion['id']}}">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <label for="id_requisicion" class="form-label">ID Requisición</label>
+                    <input type="text" class="form-control" id="id_requisicion" name="id_requisicion" value="{{ requisicion['id'] }}" readonly>
+                </div>
+                
+                <div class="col-md-3">
+                    <label for="fecha_solicitud" class="form-label">Fecha de Solicitud</label>
+                    <input value="{{ requisicion['fecha'] }}" required type="date" class="form-control" name="fecha" id="fecha">
+                </div>
+                <div class="col-md-3">
+                    <label for="usuario" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" value="{{ requisicion['usuario'] }}" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label for="descripcion_general" class="form-label">Descripción</label>
+                    <input type="text" class="form-control" id="descripcion_general" name="descripcion_general" value="{{ requisicion['descripcion'] }}" required>
+                </div>
+            </div>
 
-
-                    <table class="table table-bordered">
+            <div class="row">
+                <div class="table-container">
+                    <table class="table table-bordered" id="requisicionTable">
                         <thead>
                             <tr>
-                                <th>Fecha</th>
-                                <th>Área</th>
-                                <th>Usuario</th>
-                                <th>Descripción</th>
-                                <th>Proceso</th>
-                                <th>ETA</th>
+                                <th class="id-col">Línea</th>
+                                <th class="small-col">Descripción</th>
+                                <th class="area-col">Marca</th>
+                                <th class="usuario-col">Modelo</th>
+                                <th class="descripcion-col">Cantidad</th>
+                                <th class="proceso-col">UDM</th>
+                                <th class="small-col">Proveedor</th>
+                                <th class="oc-col">OC</th>
+                                <th class="remove-btn"></th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for item in items %}
                             <tr>
-                                <td><input value="{{requesicion['fecha']}}" required type="date" class="form-control" name="fecha" id="fecha"></td>
-                                <td><input value="{{requesicion['area']}}" required type="text" class="form-control" name="area" id="area" placeholder="Área"></td>
-                                <td><input value="{{requesicion['usuario']}}" required type="text" class="form-control" name="usuario" id="usuario" placeholder="Usuario"></td>
-                                <td><textarea value="{{requesicion['descripcion']}}" required class="form-control" name="descripcion" id="descripcion" placeholder="Descripción"></textarea></td>
-                                <td><input value="{{requesicion['proceso']}}" required type="text" class="form-control" name="proceso" id="proceso" placeholder="Proceso"></td>
-                                <td><input value="{{requesicion['ETA']}}" required type="date" class="form-control" name="ETA" id="ETA"></td>
+                                <td>{{ loop.index }}</td>
+                                <td><input type="text" class="form-control" name="descripcion[]" value="{{ item['descripcion'] }}" placeholder="Descripción"></td>
+                                <td><input type="text" class="form-control" name="marca[]" value="{{ item['marca'] }}" placeholder="Marca"></td>
+                                <td><input type="text" class="form-control" name="modelo[]" value="{{ item['modelo'] }}" placeholder="Modelo"></td>
+                                <td><input type="number" class="form-control" name="cantidad[]" value="{{ item['cantidad'] }}" placeholder="Cantidad"></td>
+                                <td><input type="text" class="form-control" name="udm[]" value="{{ item['udm'] }}" placeholder="UDM"></td>
+                                <td><input type="text" class="form-control" name="proveedor[]" value="{{ item['proveedor'] }}" placeholder="Proveedor"></td>
+                                <td><input type="text" class="form-control" name="oc[]" value="{{ item['oc'] }}" placeholder="OC"></td>
+                                <td><button type="button" class="btn btn-warning removeRowBtn">Eliminar</button></td>
                             </tr>
+                            {% endfor %}
                         </tbody>
+                        
+                        
                     </table>
 
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <a href="{{url_for('requesiciones')}}" class="btn btn-primary">Volver</a>
+                    <div class="d-flex mb-3">
+                        <button type="button" class="btn btn-warning me-2" id="addRowBtn">Añadir</button>
                     </div>
-                </form>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                        <a href="{{ url_for('requesiciones') }}" class="btn btn-warning">Volver</a>
+                    </div>
+                </div>
+
+                <div class="info-container bg-secondary bg-gradient bg-opacity-50 p-3">
+                    <h3>Acciones / estado actual</h3>
+                    <div class="mb-3">
+                        <label for="cotizacion" class="form-label">Cotización:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="cotizacion" name="cotizacion" 
+                                   placeholder="Cotización" value="{{ requisicion.cotizacion if requisicion.cotizacion != None else '' }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="autorizacion" class="form-label">Autorización:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="autorizacion" name="autorizacion" 
+                                   placeholder="Autorización" value="{{ requisicion.autorizacion if requisicion.autorizacion != None else '' }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="oc" class="form-label">OC:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="oc" name="oc" 
+                                   placeholder="Orden de Compra" value="{{ requisicion.oc if requisicion.oc != None else '' }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="proceso" class="form-label">Proceso:</label>
+                        <select class="form-select" name="proceso">
+                            <option value="Seleccionar" {% if requisicion['proceso'] == "Seleccionar" %}selected{% endif %}>Seleccionar</option>
+                            <option value="Parcial" {% if requisicion['proceso'] == "Parcial" %}selected{% endif %}>Parcial</option>
+                            <option value="Recibido" {% if requisicion['proceso'] == "Recibido" %}selected{% endif %}>Recibido</option>
+                        </select>
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="eta" class="form-label">ETA:</label>
+                        <input type="date" class="form-control" id="eta" name="eta" 
+                               value="{{ requisicion.eta if requisicion.eta != None else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="facturas" class="form-label">Facturas:</label>
+                        <input type="text" class="form-control" id="facturas" name="facturas" 
+                               placeholder="Facturas" value="{{ requisicion.facturas if requisicion.facturas != None else '' }}">
+                    </div>
+                    
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        document.getElementById("addRowBtn").addEventListener("click", function () {
+            const table = document.getElementById("requisicionTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            const columns = ['descripcion', 'marca', 'modelo', 'cantidad', 'udm', 'proveedor', 'oc'];
+
+            newRow.insertCell(0).innerHTML = table.rows.length;
+
+            columns.forEach(function (name) {
+                const cell = newRow.insertCell();
+                cell.innerHTML = `<input type="text" class="form-control" name="${name}[]" placeholder="${name.charAt(0).toUpperCase() + name.slice(1)}">`;
+            });
+
+            const removeCell = newRow.insertCell();
+            removeCell.innerHTML = `<button type="button" class="btn btn-warning removeRowBtn">Eliminar</button>`;
+            addRemoveRowEvent(removeCell.querySelector('.removeRowBtn'));
+        });
+
+        function addRemoveRowEvent(button) {
+            button.addEventListener('click', function () {
+                const row = button.closest('tr');
+                row.remove();
+                updateLineNumbers();
+            });
+        }
+
+        function updateLineNumbers() {
+            const rows = document.querySelectorAll("#requisicionTable tbody tr");
+            rows.forEach((row, index) => {
+                row.cells[0].innerText = index + 1;
+            });
+        }
+
+        document.querySelectorAll('.removeRowBtn').forEach(function (button) {
+            addRemoveRowEvent(button);
+        });
+    </script>
 </body>
 
 </html>
