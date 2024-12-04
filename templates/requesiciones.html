@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <title>Tabla de Usuarios</title>
     <meta charset="utf-8" />
@@ -15,6 +14,9 @@
         .id-col {
             width: 10%;
         }
+        .img-col {
+            width: 15%;
+        }
     </style>
 </head>
 
@@ -22,7 +24,6 @@
     <!-- Enlace de salir con icono -->
     <div class="container mt-4">
         <div class="d-flex justify-content-between mb-3 align-items-center">
-            <!-- Botón de Salir alineado a la izquierda -->
             <a href="{{ url_for('logout') }}" class="btn btn-warning d-flex align-items-center justify-content-center" style="width: 100px;">
                 <span class="me-1">Salir</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
@@ -31,85 +32,82 @@
                 </svg>
             </a>
             
-            
-    
-            <!-- Campo de usuario con ancho extendido -->
             <div class="d-flex align-items-center">
                 <label for="usuario-display" class="form-label mb-0 me-2">Usuario:</label>
                 <input type="text" id="usuario-display" class="form-control" value="{{ usuario }}" readonly style="width: 300px;">
             </div>
         </div>
     </div>
-    
-    
 
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-md-8 mx-auto">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div>
-                            <a href="{{ url_for('formulario_recibo') }}" class="btn btn-warning">Recibos</a>
-                            <a href="{{ url_for('formulario_entregas') }}" class="btn btn-warning">Entrega</a>
-                        </div>
-                        <a href="{{url_for('formulario_agregar_req')}}" class="btn btn-warning">Nueva
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                            </svg>
-                        </a>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <a href="{{ url_for('formulario_recibo') }}" class="btn btn-warning">Recibos</a>
+                        <a href="{{ url_for('formulario_entregas') }}" class="btn btn-warning">Entrega</a>
                     </div>
-                    <h3 class="text-center mb-4">Requisiciones</h3>
-
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="id-col">Id_requisicion</th>
-                                <th>Fecha</th>
-                                <th>Área</th>
-                                <th>Usuario</th>
-                                <th>Descripción</th>
-                                <th>Proceso</th> <!-- Añadimos la columna de proceso -->
-                                <th>ETA</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for requisicion in requisiciones %}
-                            <tr>
-                                <td>{{ requisicion['id'] }}</td>
-                                <td>{{ requisicion['fecha'] }}</td>
-                                <td>{{ requisicion['area'] }}</td>
-                                <td>{{ requisicion['usuario'] }}</td>
-                                <td>{{ requisicion['descripcion'] }}</td>
-                                <td>{{ requisicion['proceso'] }}</td> <!-- Aquí mostramos el campo proceso -->
-                                <td>{{ requisicion['ETA'] }}</td>
-                                <td>
-                                    <a href="{{ url_for('editar_req', id=requisicion['id']) }}" class="btn btn-outline-info btn-sm w-100">Editar</a>
-                                </td>
-                                <td>
-                                    <form action="{{ url_for('eliminar_req') }}" method="POST">
-                                        <input type="hidden" name="id" value="{{ requisicion['id'] }}">
-                                        <button class="btn btn-outline-danger btn-sm w-100">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    
-                    
+                    <a href="{{ url_for('formulario_agregar_req') }}" class="btn btn-warning">Nueva
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                        </svg>
+                    </a>
                 </div>
+                <h3 class="text-center mb-4">Requisiciones</h3>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="id-col">Id_requisicion</th>
+                            <th>Fecha</th>
+                            <th>Área</th>
+                            <th>Usuario</th>
+                            <th>Descripción</th>
+                            <th>Proceso</th>
+                            <th>ETA</th>
+                            <th class="img-col">Imagen</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for requisicion in requisiciones %}
+                        <tr>
+                            <td>{{ requisicion['id'] }}</td>
+                            <td>{{ requisicion['fecha'] }}</td>
+                            <td>{{ requisicion['area'] }}</td>
+                            <td>{{ requisicion['usuario'] }}</td>
+                            <td>{{ requisicion['descripcion'] }}</td>
+                            <td>{{ requisicion['proceso'] }}</td>
+                            <td>{{ requisicion['ETA'] }}</td>
+                            <td>
+                                {% if requisicion['imagen'] %}
+                                <img src="{{ url_for('static', filename='img/' + requisicion['imagen']) }}" alt="Imagen" class="img-fluid" style="max-width: 100px;">
+                                {% else %}
+                                No imagen
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('editar_req', id=requisicion['id']) }}" class="btn btn-outline-info btn-sm w-100">Editar</a>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('eliminar_req') }}" method="POST">
+                                    <input type="hidden" name="id" value="{{ requisicion['id'] }}">
+                                    <button class="btn btn-outline-danger btn-sm w-100">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
-        <!-- Bootstrap JavaScript Libraries -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    </body>
-
-
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
 </html>

@@ -2,8 +2,6 @@
 <html lang="en">
 
 <head>
-    <br>
-    <br>
     <title>Agregar Requisición</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -77,12 +75,10 @@
                     <label for="id_requisicion" class="form-label">ID Requisición</label>
                     <input type="text" class="form-control" id="id_requisicion" name="id_requisicion" value="{{ id_requisicion }}" readonly>
                 </div>
-                
-                
                 <div class="col-md-3">
                     <label for="fecha_solicitud" class="form-label">Fecha de Solicitud</label>
                     <input type="date" class="form-control" id="fecha_solicitud" name="fecha_solicitud" required>
-                </div>
+                </div>                
                 <div class="col-md-3">
                     <label for="usuario" class="form-label">Usuario</label>
                     <input type="text" class="form-control" id="usuario" name="usuario" value="{{ usuario }}" readonly>
@@ -104,6 +100,7 @@
                                 <th class="area-col">Marca</th>
                                 <th class="usuario-col">Modelo</th>
                                 <th class="descripcion-col">Cantidad</th>
+                                <th class="id-estado">Estado</th>
                                 <th class="proceso-col">UDM</th>
                                 <th class="small-col">Proveedor</th>
                                 <th class="oc-col">OC</th>
@@ -117,14 +114,19 @@
                                 <td><input type="text" class="form-control" name="descripcion[]" placeholder="Descripción"></td>
                                 <td><input type="text" class="form-control" name="marca[]" placeholder="Marca"></td>
                                 <td><input type="text" class="form-control" name="modelo[]" placeholder="Modelo"></td>
-                                <td><input type="number" class="form-control" name="cantidad[]" placeholder="Cantidad"></td>
+                                <td><input type="text" class="form-control" name="cantidad[]" placeholder="Cantidad"></td>
+                                <td>
+                                    <input type="text" class="form-control" name="estado[]" value="Espera" readonly>
+                                </td>
                                 <td><input type="text" class="form-control" name="udm[]" placeholder="UDM"></td>
                                 <td><input type="text" class="form-control" name="proveedor[]" placeholder="Proveedor"></td>
-                                <td><input type="text" class="form-control" name="oc[]" placeholder="OC"></td>
+                                <td><input type="text" class="form-control" name="oc_text[]" placeholder="OC"></td>
                                 <td><input type="file" class="form-control" name="imagen[]"></td>
-                                <td><button type="button" class="btn btn-warning">Eliminar</button></td>
+                                <td><button type="button" class="btn btn-warning removeRowBtn">Eliminar</button></td>
                             </tr>
                         </tbody>
+                        
+                        
                     </table>
 
                     <!-- Botones para añadir ítems -->
@@ -145,36 +147,38 @@
                     <div class="mb-3">
                         <label for="cotizacion" class="form-label">Cotización:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="cotizacion" name="cotizacion" placeholder="Cotización">
+                            <input type="file" class="form-control" id="cotizacion" name="cotizacion">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="autorizacion" class="form-label">Autorización:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="autorizacion" name="autorizacion" placeholder="Autorización">
+                            <input type="file" class="form-control" id="autorizacion" name="autorizacion">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="oc" class="form-label">OC:</label>
+                        <label for="oc_file" class="form-label">OC:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="oc" name="oc" placeholder="Orden de Compra">
+                            <input type="file" class="form-control" id="oc_file" name="oc_file" accept="application/pdf">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="proceso" class="form-label">Proceso:</label>
                         <select class="form-select" name="proceso">
                             <option selected>Seleccionar</option>
-                            <option>Parcial</option>
-                            <option>Recibido</option>
+                            <option>Cotizacion</option>
+                            <option>Autorizacion</option>
+                            <option>Orden de compra</option>
+                            <option>Espera de material</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="necesidad" class="form-label">Necesidad:</label>
-                        <select class="form-select" name="necesidad">
+                        <label for="prioridad" class="form-label">Prioridad:</label>
+                        <select class="form-select" name="prioridad">
                             <option selected>Seleccionar</option>
                             <option>Urgente</option>
                             <option>Normal</option>
-                        </select>
+                        </select>                        
                     </div>
                     <div class="mb-3">
                         <label for="eta" class="form-label">ETA:</label>
@@ -198,23 +202,30 @@
     <script>
         // Añadir una nueva fila a la tabla
         document.getElementById("addRowBtn").addEventListener("click", function () {
-            const table = document.getElementById("requisicionTable").getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            const columns = ['descripcion', 'marca', 'modelo', 'cantidad', 'udm', 'proveedor', 'oc'];
-        
-            newRow.insertCell(0).innerHTML = table.rows.length;
-        
-            columns.forEach(function (name) {
-                const cell = newRow.insertCell();
-                cell.innerHTML = `<input type="text" class="form-control" name="${name}[]" placeholder="${name.charAt(0).toUpperCase() + name.slice(1)}">`;
-            });
-        
-            // Agregar botón de eliminar en la nueva fila
-            const removeCell = newRow.insertCell();
-            removeCell.innerHTML = `<button type="button" class="btn btn-warning removeRowBtn">Eliminar</button>`;
-            addRemoveRowEvent(removeCell.querySelector('.removeRowBtn'));
-        });
-        
+    const table = document.getElementById("requisicionTable").getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+
+    // Agregar número de línea
+    newRow.insertCell(0).innerHTML = table.rows.length;
+
+    // Crear las columnas de entrada
+    newRow.insertCell(1).innerHTML = `<input type="text" class="form-control" name="descripcion[]" placeholder="Descripción">`;
+    newRow.insertCell(2).innerHTML = `<input type="text" class="form-control" name="marca[]" placeholder="Marca">`;
+    newRow.insertCell(3).innerHTML = `<input type="text" class="form-control" name="modelo[]" placeholder="Modelo">`;
+    newRow.insertCell(4).innerHTML = `<input type="text" class="form-control" name="cantidad[]" placeholder="Cantidad">`; // Texto
+    newRow.insertCell(5).innerHTML = `<input type="text" class="form-control" name="estado[]" placeholder="Estado">`; // Texto
+    newRow.insertCell(6).innerHTML = `<input type="text" class="form-control" name="udm[]" placeholder="UDM">`;
+    newRow.insertCell(7).innerHTML = `<input type="text" class="form-control" name="proveedor[]" placeholder="Proveedor">`;
+    newRow.insertCell(8).innerHTML = `<input type="text" class="form-control" name="oc_text[]" placeholder="OC">`;
+    newRow.insertCell(9).innerHTML = `<input type="file" class="form-control" name="imagen[]">`;
+
+    // Agregar botón de eliminar
+    const removeCell = newRow.insertCell(10);
+    removeCell.innerHTML = `<button type="button" class="btn btn-warning removeRowBtn">Eliminar</button>`;
+    addRemoveRowEvent(removeCell.querySelector('.removeRowBtn'));
+});
+
+
         // Añadir evento para eliminar una fila
         function addRemoveRowEvent(button) {
             button.addEventListener('click', function () {
@@ -232,9 +243,20 @@
             });
         }
 
+        // Agregar evento inicial a los botones existentes
         document.querySelectorAll('.removeRowBtn').forEach(function (button) {
             addRemoveRowEvent(button);
         });
+
+        window.onload = function () {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mes comienza desde 0
+        const dd = String(today.getDate()).padStart(2, '0');
+
+        const currentDate = `${yyyy}-${mm}-${dd}`; // Formato ISO 8601 (YYYY-MM-DD)
+        document.getElementById("fecha_solicitud").value = currentDate; // Asigna la fecha actual
+    };
     </script>
 </body>
 
