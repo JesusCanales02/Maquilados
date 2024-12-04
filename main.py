@@ -723,6 +723,42 @@ def logout():
     session.pop('empleado_nombre', None)
     return redirect(url_for('login'))
 
+@app.route('/actualizar_estado_recibo', methods=['POST'])
+def actualizar_estado_recibo():
+    if 'empleado_id' not in session:
+        return redirect(url_for('login'))
+
+    # Captura los datos enviados desde el formulario
+    item_ids = request.form.getlist('item_ids[]')
+    estados = request.form.getlist('estados[]')
+
+    print("IDs recibidos:", item_ids)  # Para depuración
+    print("Estados recibidos:", estados)  # Para depuración
+
+    # Conexión a la base de datos
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            # Actualiza cada ítem en la base de datos
+            for item_id, estado in zip(item_ids, estados):
+                print(f"Actualizando item_id={item_id} con estado={estado}")
+                cursor.execute(
+                    "UPDATE items SET estado = %s WHERE id = %s",
+                    (estado, item_id)
+                )
+        conexion.commit()
+        flash("Los estados se actualizaron correctamente.", "success")
+    except Exception as e:
+        conexion.rollback()
+        print("Error al actualizar:", str(e))
+        flash(f"Error al actualizar los estados: {e}", "danger")
+    finally:
+        conexion.close()
+
+    return redirect(url_for('formulario_recibo'))
+
+
+
 @app.route("/entregas")
 def formulario_entregas():
     if 'empleado_id' not in session:  
@@ -801,9 +837,10 @@ def guardar_req():
 
     for i in range(len(descripciones)):
         controlador_req.insertar_item(
-            requisicion_id, descripciones[i], marcas[i], modelos[i], cantidades[i],
-            udms[i], proveedores[i], oc_texts[i], None, None, rutas_imagenes[i]
-        )
+        requisicion_id, descripciones[i], marcas[i], modelos[i], cantidades[i],
+        udms[i], proveedores[i], oc_texts[i], None, None, rutas_imagenes[i]
+    )
+
 
     return redirect("/requesiciones")
 
@@ -818,7 +855,7 @@ def formulario_recibo():
     # Obtener ítems relacionados con el área del usuario
     conexion = obtener_conexion()
     query = """
-        SELECT i.descripcion, i.marca, i.modelo, i.cantidad, i.udm, i.proveedor
+        SELECT i.id, i.descripcion, i.marca, i.modelo, i.cantidad, i.udm, i.proveedor, i.estado
         FROM items i
         JOIN requisiciones r ON i.requisicion_id = r.id
         JOIN empleado e ON r.usuario = e.Nombre
@@ -833,6 +870,7 @@ def formulario_recibo():
     conexion.close()
 
     return render_template("recibo.html", items=items)
+
 
 
 @app.route("/requesiciones")
@@ -940,34 +978,30 @@ def actualizar_req():
     )
 
     # Manejar los ítems
+    item_ids = request.form.getlist('item_id[]')  # Asegúrate de recibir todos los IDs de los ítems
     descripciones = request.form.getlist('descripcion[]')
     marcas = request.form.getlist('marca[]')
     modelos = request.form.getlist('modelo[]')
     cantidades = request.form.getlist('cantidad[]')
-    estados = request.form.getlist('estado[]')  # Agregar estado aquí
     udms = request.form.getlist('udm[]')
     proveedores = request.form.getlist('proveedor[]')
     ocs = request.form.getlist('oc[]')
     imagenes = request.files.getlist('imagen[]')
 
-    for i in range(len(descripciones)):
+    for i in range(len(item_ids)):
         # Si hay una imagen nueva, guárdala
         nueva_imagen = guardar_archivo(imagenes[i]) if imagenes[i].filename != '' else None
 
-        # Obtener el ID del ítem actual (puedes usar un campo oculto en el formulario para este propósito)
-        item_id = request.form.getlist('item_id[]')[i]
-
         # Si no hay una nueva imagen, conservar la existente
-        imagen_actual = controlador_req.obtener_item_por_id(item_id)['imagen'] if nueva_imagen is None else nueva_imagen
+        imagen_actual = controlador_req.obtener_item_por_id(item_ids[i])['imagen'] if nueva_imagen is None else nueva_imagen
 
         # Actualizar el ítem
         controlador_req.actualizar_item(
-            id=item_id,
+            id=item_ids[i],  # Aquí utilizamos los IDs obtenidos del formulario
             requisicion_id=id,
             descripcion=descripciones[i],
             marca=marcas[i],
             modelo=modelos[i],
-            estado=estados[i],  # Asegúrate de pasar el estado aquí
             cantidad=cantidades[i],
             udm=udms[i],
             proveedor=proveedores[i],
@@ -976,8 +1010,6 @@ def actualizar_req():
         )
 
     return redirect("/requesiciones")
-
-
 
 
 if __name__ == "__main__":

@@ -104,10 +104,10 @@
 
         <div class="table-container">
             <form method="POST" action="{{ url_for('actualizar_estado_recibo') }}">
-                <table class="table table-bordered">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>Linea</th>
+                            <th>Línea</th>
                             <th>Descripción</th>
                             <th>Marca</th>
                             <th>Modelo</th>
@@ -121,25 +121,29 @@
                         {% for item in items %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td>{{ item['descripcion'] }}</td>
-                            <td>{{ item['marca'] }}</td>
-                            <td>{{ item['modelo'] }}</td>
-                            <td>{{ item['cantidad'] }}</td>
-                            <td>{{ item['udm'] }}</td>
-                            <td>{{ item['proveedor'] }}</td>
+                            <td>{{ item.descripcion }}</td>
+                            <td>{{ item.marca }}</td>
+                            <td>{{ item.modelo }}</td>
+                            <td>{{ item.cantidad }}</td>
+                            <td>{{ item.udm }}</td>
+                            <td>{{ item.proveedor }}</td>
                             <td>
-                                <select class="form-select" name="estado_{{ item['id'] }}">
-                                    <option value="Seleccionar" {% if item['estado'] == 'Seleccionar' %}selected{% endif %}>Seleccionar</option>
-                                    <option value="Parcial" {% if item['estado'] == 'Parcial' %}selected{% endif %}>Parcial</option>
-                                    <option value="Recibido" {% if item['estado'] == 'Recibido' %}selected{% endif %}>Recibido</option>
+                                <input type="hidden" name="item_ids[]" value="{{ item.id }}">
+                                <select class="form-select" name="estados[]">
+                                    <option value="Espera" {% if item.estado == 'Espera' %}selected{% endif %}>Espera</option>
+                                    <option value="Recibido" {% if item.estado == 'Recibido' %}selected{% endif %}>Recibido</option>
+                                    <option value="Parcial" {% if item.estado == 'Parcial' %}selected{% endif %}>Parcial</option>
                                 </select>
                             </td>
+                            
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-warning">Actualizar Estados</button>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+
             </form>
+            
             
             
         </div>

@@ -106,7 +106,6 @@
                                 <th class="area-col">Marca</th>
                                 <th class="usuario-col">Modelo</th>
                                 <th class="descripcion-col">Cantidad</th>
-                                <th class="estado-col">Estado</th>
                                 <th class="proceso-col">UDM</th>
                                 <th class="small-col">Proveedor</th>
                                 <th class="oc-col">OC</th>
@@ -118,46 +117,13 @@
                             {% for item in items %}
                             <tr>
                                 <td><input type="hidden" name="item_id[]" value="{{ item['id'] }}">{{ loop.index }}</td>
-                                <td>
-                                    <input type="text" class="form-control" name="descripcion[]" 
-                                           value="{{ item['descripcion'] if item['descripcion'] else '' }}" 
-                                           placeholder="Descripción">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="marca[]" 
-                                           value="{{ item['marca'] if item['marca'] else '' }}" 
-                                           placeholder="Marca">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="modelo[]" 
-                                           value="{{ item['modelo'] if item['modelo'] else '' }}" 
-                                           placeholder="Modelo">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="cantidad[]" 
-                                           value="{{ item['cantidad'] if item['cantidad'] else '' }}" 
-                                           placeholder="Cantidad">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="estado[]" 
-                                           value="{{ item['estado'] if item['estado'] else 'Espera' }}" 
-                                           readonly>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="udm[]" 
-                                           value="{{ item['udm'] if item['udm'] else '' }}" 
-                                           placeholder="UDM">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="proveedor[]" 
-                                           value="{{ item['proveedor'] if item['proveedor'] else '' }}" 
-                                           placeholder="Proveedor">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="oc[]" 
-                                           value="{{ item['oc'] if item['oc'] else '' }}" 
-                                           placeholder="OC">
-                                </td>
+                                <td><input type="text" class="form-control" name="descripcion[]" value="{{ item['descripcion'] }}"></td>
+                                <td><input type="text" class="form-control" name="marca[]" value="{{ item['marca'] }}"></td>
+                                <td><input type="text" class="form-control" name="modelo[]" value="{{ item['modelo'] }}"></td>
+                                <td><input type="text" class="form-control" name="cantidad[]" value="{{ item['cantidad'] }}"></td>
+                                <td><input type="text" class="form-control" name="udm[]" value="{{ item['udm'] }}"></td>
+                                <td><input type="text" class="form-control" name="proveedor[]" value="{{ item['proveedor'] }}"></td>
+                                <td><input type="text" class="form-control" name="oc[]" value="{{ item['oc'] }}"></td>
                                 <td>
                                     <input type="file" class="form-control" name="imagen[]">
                                     {% if item['imagen'] %}
@@ -168,6 +134,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
+                        
                     </table>
     
                         <div class="d-flex mb-3">
