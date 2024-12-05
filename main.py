@@ -929,6 +929,8 @@ def formulario_recibo():
             items = cursor.fetchall()
 
         conexion.close()
+        if not items:
+            flash("No se encontraron resultados para tu búsqueda.", "danger")
 
     return render_template("recibo.html", items=items)
 
