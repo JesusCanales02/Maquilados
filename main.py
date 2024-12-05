@@ -728,7 +728,6 @@ def actualizar_estado_recibo():
     if 'empleado_id' not in session:
         return redirect(url_for('login'))
 
-    # Captura los datos enviados desde el formulario
     item_ids = request.form.getlist('item_ids[]')
     estados = request.form.getlist('estados[]')
 
@@ -799,17 +798,15 @@ def guardar_req():
     if 'empleado_id' not in session:
         return redirect(url_for('login'))
 
-    # Captura de archivos subidos
+    # Captura de archivos subidos y otros datos generales
     cotizacion_file = request.files.get("cotizacion")
     autorizacion_file = request.files.get("autorizacion")
-    oc_file = request.files.get("oc_file")  # Archivo OC
-
-    # Leer contenido binario de los archivos
+    oc_file = request.files.get("oc_file")
     cotizacion_data = cotizacion_file.read() if cotizacion_file and cotizacion_file.filename != '' else None
     autorizacion_data = autorizacion_file.read() if autorizacion_file and autorizacion_file.filename != '' else None
     oc_file_path = guardar_archivo(oc_file) if oc_file and oc_file.filename != '' else None
 
-    # Otros campos del formulario
+    # Datos de la requisición
     fecha = request.form.get("fecha_solicitud")
     usuario = session['empleado_nombre']
     descripcion = request.form.get("descripcion_general")
@@ -818,7 +815,7 @@ def guardar_req():
     eta = request.form.get("eta") or None
     facturas = request.form.get("facturas") or None
 
-    # Insertar en la base de datos
+    # Insertar la requisición en la base de datos
     requisicion_id = controlador_req.insertar_requisicion(
         fecha, usuario, descripcion, cotizacion_data, autorizacion_data, oc_file_path, proceso, prioridad, eta, facturas
     )
@@ -830,46 +827,44 @@ def guardar_req():
     cantidades = request.form.getlist('cantidad[]')
     udms = request.form.getlist('udm[]')
     proveedores = request.form.getlist('proveedor[]')
-    oc_texts = request.form.getlist('oc_text[]')  # Lista de OCs en texto
+    ocs = request.form.getlist('oc[]')  # Aquí capturamos los valores de OC
     imagenes = request.files.getlist('imagen[]')
 
-    rutas_imagenes = [guardar_archivo(img) for img in imagenes]
-
     for i in range(len(descripciones)):
+        imagen_path = guardar_archivo(imagenes[i]) if imagenes[i].filename != '' else None
         controlador_req.insertar_item(
-        requisicion_id, descripciones[i], marcas[i], modelos[i], cantidades[i],
-        udms[i], proveedores[i], oc_texts[i], None, None, rutas_imagenes[i]
-    )
-
+            requisicion_id, descripciones[i], marcas[i], modelos[i], cantidades[i],
+            udms[i], proveedores[i], ocs[i], None, None, imagen_path
+        )
 
     return redirect("/requesiciones")
 
 
 
-@app.route("/recibo")
-def formulario_recibo():
-    if 'empleado_id' not in session:  
-        return redirect(url_for('login'))  # Verificar si el usuario está logueado
-    area_usuario = session.get('empleado_area')  # Obtener el área del usuario desde la sesión
+# @app.route("/recibo")
+# def formulario_recibo():
+#     if 'empleado_id' not in session:  
+#         return redirect(url_for('login'))  # Verificar si el usuario está logueado
+#     area_usuario = session.get('empleado_area')  # Obtener el área del usuario desde la sesión
 
-    # Obtener ítems relacionados con el área del usuario
-    conexion = obtener_conexion()
-    query = """
-        SELECT i.id, i.descripcion, i.marca, i.modelo, i.cantidad, i.udm, i.proveedor, i.estado
-        FROM items i
-        JOIN requisiciones r ON i.requisicion_id = r.id
-        JOIN empleado e ON r.usuario = e.Nombre
-        JOIN area a ON e.IdArea = a.IdArea
-        WHERE a.NombreArea = %s
-    """
-    params = [area_usuario]
+#     # Obtener ítems relacionados con el área del usuario
+#     conexion = obtener_conexion()
+#     query = """
+#         SELECT i.id, i.descripcion, i.marca, i.modelo, i.cantidad, i.udm, i.proveedor, i.estado
+#         FROM items i
+#         JOIN requisiciones r ON i.requisicion_id = r.id
+#         JOIN empleado e ON r.usuario = e.Nombre
+#         JOIN area a ON e.IdArea = a.IdArea
+#         WHERE a.NombreArea = %s
+#     """
+#     params = [area_usuario]
 
-    with conexion.cursor() as cursor:
-        cursor.execute(query, tuple(params))
-        items = cursor.fetchall()
-    conexion.close()
+#     with conexion.cursor() as cursor:
+#         cursor.execute(query, tuple(params))
+#         items = cursor.fetchall()
+#     conexion.close()
 
-    return render_template("recibo.html", items=items)
+#     return render_template("recibo.html", items=items)
 
 
 
@@ -901,45 +896,42 @@ def requesiciones():
     return render_template("requesiciones.html", requisiciones=requisiciones, usuario=nombre_usuario)
 
 @app.route("/recibo", methods=["GET", "POST"])
-def filtrar_recibo():
-    if 'empleado_id' not in session:  # Verificar si el usuario está logueado
-        return redirect(url_for('login'))  # Si no, redirigir al login
+def formulario_recibo():
+    if 'empleado_id' not in session:
+        return redirect(url_for('login'))
 
-    area_usuario = session.get('empleado_area')  # Obtener el área del usuario desde la sesión
-    oc = request.form.get("oc")
-    solicitante = request.form.get("solicitante")
-    cotizacion = request.form.get("cotizacion")
+    items = []
+    if request.method == "POST":
+        oc = request.form.get("oc")
+        solicitante = request.form.get("solicitante")
+        cotizacion = request.form.get("cotizacion")
 
-    # Construir la consulta para filtrar ítems por área del usuario logueado
-    conexion = obtener_conexion()
-    query = """
-        SELECT i.descripcion, i.marca, i.modelo, i.cantidad, i.udm, i.proveedor, i.estado
-        FROM items i
-        JOIN requisiciones r ON i.requisicion_id = r.id
-        JOIN empleado e ON r.usuario = e.Nombre
-        JOIN area a ON e.IdArea = a.IdArea
-        WHERE a.NombreArea = %s
-    """
-    params = [area_usuario]
+        conexion = obtener_conexion()
+        query = """
+            SELECT i.id, i.descripcion, i.marca, i.modelo, i.cantidad, i.udm, i.proveedor, i.oc, i.estado
+            FROM items i
+            JOIN requisiciones r ON i.requisicion_id = r.id
+            WHERE 1=1
+        """
+        params = []
+        if oc:
+            query += " AND i.oc = %s"
+            params.append(oc)
+        if solicitante:
+            query += " AND r.usuario LIKE %s"
+            params.append(f"%{solicitante}%")
+        if cotizacion:
+            query += " AND r.cotizacion = %s"
+            params.append(cotizacion)
 
-    # Agregar filtros adicionales si se proporcionan
-    if oc:
-        query += " AND r.oc = %s"
-        params.append(oc)
-    if solicitante:
-        query += " AND r.usuario LIKE %s"
-        params.append(f"%{solicitante}%")  # Búsqueda parcial
-    if cotizacion:
-        query += " AND r.cotizacion = %s"
-        params.append(cotizacion)
+        with conexion.cursor() as cursor:
+            cursor.execute(query, tuple(params))
+            items = cursor.fetchall()
 
-    with conexion.cursor() as cursor:
-        cursor.execute(query, tuple(params))
-        items = cursor.fetchall()
-    conexion.close()
+        conexion.close()
 
-    # Renderizar la página de recibo con los ítems filtrados
     return render_template("recibo.html", items=items)
+
 
 
 @app.route("/eliminar_req", methods=["POST"])
@@ -954,8 +946,9 @@ def editar_req(id):
     if 'empleado_id' not in session:
         return redirect(url_for('login'))
     requisicion = controlador_req.obtener_requisicion_por_id(id)
-    items = controlador_req.obtener_items_por_requisicion(id)
+    items = controlador_req.obtener_items_por_requisicion(id)  # Incluye el campo OC aquí
     return render_template("editar_req.html", requisicion=requisicion, items=items)
+
 
 @app.route("/actualizar_req", methods=["POST"])
 def actualizar_req():

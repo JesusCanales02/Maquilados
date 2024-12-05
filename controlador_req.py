@@ -620,6 +620,7 @@ def obtener_items_por_requisicion(requisicion_id):
     conexion.close()
     return items
 
+
 # Actualizar un ítem por su ID
 def actualizar_item(id, requisicion_id, descripcion, marca, modelo, cantidad, udm, proveedor, oc, imagen=None):
     conexion = obtener_conexion()

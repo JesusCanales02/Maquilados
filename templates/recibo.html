@@ -51,9 +51,11 @@
             gap: 10px;
         }
 
-        input[type="text"], select {
+        input[type="text"],
+        select {
             width: 100%;
         }
+
         .input-group-text {
             display: flex;
             align-items: center;
@@ -63,10 +65,8 @@
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: #f2f2f2;
         }
-
     </style>
 </head>
-
 
 <body>
 
@@ -76,33 +76,39 @@
             <a href="{{url_for('requesiciones')}}" class="btn btn-warning">Volver</a>
         </div>
 
-        <form class="form-inline row mb-4" method="POST" action="{{ url_for('filtrar_recibo') }}">
+        <!-- Formulario de búsqueda -->
+        <form class="form-inline row mb-4" method="POST" action="{{ url_for('formulario_recibo') }}">
+
             <div class="col-md-6">
                 <label for="oc" class="form-label">OC</label>
                 <div class="input-group">
                     <input type="text" class="form-control" id="oc" name="oc" placeholder="Orden de Compra">
+
                 </div>
             </div>
-        
+
             <div class="col-md-6">
                 <label for="solicitante" class="form-label">Solicitante</label>
-                <input type="text" class="form-control" id="solicitante" name="solicitante" placeholder="Nombre del solicitante">
+                <input type="text" class="form-control" id="solicitante" name="solicitante"
+                    placeholder="Nombre del solicitante">
             </div>
-        
+
             <div class="col-md-6 mt-3">
                 <label for="cotizacion" class="form-label">Cotización</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="cotizacion" name="cotizacion" placeholder="Número de cotización">
+                    <input type="text" class="form-control" id="cotizacion" name="cotizacion"
+                        placeholder="Número de cotización">
                 </div>
             </div>
-        
+
             <div class="buttons mt-3">
                 <button type="submit" class="btn btn-warning">Buscar</button>
             </div>
         </form>
-        
 
+        <!-- Tabla que solo se muestra si hay resultados -->
         <div class="table-container">
+            {% if items %}
             <form method="POST" action="{{ url_for('actualizar_estado_recibo') }}">
                 <table class="table">
                     <thead>
@@ -130,24 +136,26 @@
                             <td>
                                 <input type="hidden" name="item_ids[]" value="{{ item.id }}">
                                 <select class="form-select" name="estados[]">
-                                    <option value="Espera" {% if item.estado == 'Espera' %}selected{% endif %}>Espera</option>
-                                    <option value="Recibido" {% if item.estado == 'Recibido' %}selected{% endif %}>Recibido</option>
-                                    <option value="Parcial" {% if item.estado == 'Parcial' %}selected{% endif %}>Parcial</option>
+                                    <option value="Espera" {% if item.estado == 'Espera' %}selected{% endif %}>Espera
+                                    </option>
+                                    <option value="Recibido" {% if item.estado == 'Recibido' %}selected{% endif %}>
+                                        Recibido
+                                    </option>
+                                    <option value="Parcial" {% if item.estado == 'Parcial' %}selected{% endif %}>
+                                        Parcial
+                                    </option>
                                 </select>
                             </td>
-                            
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
                 <button type="submit" class="btn btn-warning">Actualizar</button>
-
             </form>
-            
-            
-            
+            {% else %}
+            <p class="text-center">Por favor, realiza una búsqueda para mostrar los resultados.</p>
+            {% endif %}
         </div>
-        
 
     </div>
 
