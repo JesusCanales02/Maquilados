@@ -659,6 +659,41 @@ def obtener_requisiciones():
     conexion.close()
     return requisiciones
 
+def obtener_requisiciones_pendientes():
+    conexion = obtener_conexion()
+    requisiciones = []
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("""
+                SELECT id, descripcion, cantidad, estado
+                FROM items
+                WHERE estado = 'Pendiente'
+            """)
+            requisiciones = cursor.fetchall()
+    except Exception as e:
+        print(f"Error al obtener requisiciones pendientes: {e}")
+    finally:
+        conexion.close()
+    return requisiciones
+
+def actualizar_estado_requisiciones(ids):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            for id_requisicion in ids:
+                cursor.execute("""
+                    UPDATE items
+                    SET estado = 'Entregado'
+                    WHERE id = %s
+                """, (id_requisicion,))
+        conexion.commit()
+    except Exception as e:
+        conexion.rollback()
+        print(f"Error al actualizar estados: {e}")
+        raise e
+    finally:
+        conexion.close()
+
 # Obtener una requisición por ID
 def obtener_requisicion_por_id(id):
     conexion = obtener_conexion()

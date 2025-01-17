@@ -18,85 +18,59 @@
         <h3>Entregas</h3>
     </header>
     <main>
-        <!-- Tabla de requisiciones pendientes -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Estado</th>
-                    <th>Confirmar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Simulando datos, los reemplazarás con un bucle backend -->
-                <tr>
-                    <td>1</td>
-                    <td>Material de oficina</td>
-                    <td>10</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <input type="checkbox" class="form-check-input">
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Equipo de cómputo</td>
-                    <td>5</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <input type="checkbox" class="form-check-input">
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Equipo de cómputo</td>
-                    <td>5</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <input type="checkbox" class="form-check-input">
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Equipo de cómputo</td>
-                    <td>5</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <input type="checkbox" class="form-check-input">
-                    </td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Equipo de cómputo</td>
-                    <td>5</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <input type="checkbox" class="form-check-input">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Botones de acción -->
-        <div class="d-flex justify-content-between mt-4">
-            <button class="btn btn-warning" id="confirmar-todos">Confirmar Todo</button>
-            <a href="{{ url_for('requesiciones') }}" class="btn btn-warning">Volver</a>
+        <!-- Mostrar mensajes -->
+        <div class="container mt-3">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
+
+        <!-- Tabla de requisiciones pendientes -->
+        <form method="POST" action="{{ url_for('formulario_entregas') }}">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Estado</th>
+                        <th>Confirmar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in requisiciones %}
+                    <tr>
+                        <td>{{ req['id'] }}</td>
+                        <td>{{ req['descripcion'] }}</td>
+                        <td>{{ req['cantidad'] }}</td>
+                        <td>{{ req['estado'] }}</td>
+                        <td>
+                            <input type="checkbox" class="form-check-input" name="confirmar" value="{{ req['id'] }}">
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No hay entregas pendientes.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-warning" id="confirmar-todos">Confirmar Seleccionados</button>
+                <a href="{{ url_for('requesiciones') }}" class="btn btn-warning">Volver</a>
+            </div>
+        </form>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Ejemplo: Confirmar todas las requisiciones marcadas
-        document.getElementById('confirmar-todos').addEventListener('click', () => {
-            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
-            if (checkboxes.length > 0) {
-                alert(`Has confirmado ${checkboxes.length} requisición(es).`);
-                // Aquí envías los datos al backend con un formulario o fetch
-            } else {
-                alert('Por favor selecciona al menos una requisición para confirmar.');
-            }
-        });
-    </script>
 </body>
 </html>

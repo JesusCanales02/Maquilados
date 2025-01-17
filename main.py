@@ -758,11 +758,51 @@ def actualizar_estado_recibo():
 
 
 
-@app.route("/entregas")
+@app.route('/entregas', methods=['GET', 'POST'])
 def formulario_entregas():
-    if 'empleado_id' not in session:  
+    if 'empleado_id' not in session:
         return redirect(url_for('login'))
-    return render_template("entregas.html")
+
+    conexion = obtener_conexion()
+
+    if request.method == 'POST':
+        # Confirmar entregas
+        confirmados = request.form.getlist('confirmar')
+        if confirmados:
+            try:
+                with conexion.cursor() as cursor:
+                    for id_requisicion in confirmados:
+                        cursor.execute("""
+                            UPDATE items
+                            SET estado = 'Entregado'
+                            WHERE id = %s
+                        """, (id_requisicion,))
+                conexion.commit()
+                flash(f"{len(confirmados)} entrega(s) confirmada(s) exitosamente.", "success")
+            except Exception as e:
+                conexion.rollback()
+                flash(f"Error al confirmar entregas: {str(e)}", "danger")
+        else:
+            flash("No seleccionaste ninguna entrega para confirmar.", "warning")
+
+    # Obtener requisiciones pendientes o recibidas
+    requisiciones = []
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("""
+                SELECT id, descripcion, cantidad, estado
+                FROM items
+                WHERE estado IN ('Pendiente', 'Recibido')
+            """)
+            requisiciones = cursor.fetchall()
+    except Exception as e:
+        flash(f"Error al obtener requisiciones: {str(e)}", "danger")
+    finally:
+        conexion.close()
+
+    return render_template("entregas.html", requisiciones=requisiciones)
+
+
 
 @app.route("/agregar_req")
 def formulario_agregar_req():

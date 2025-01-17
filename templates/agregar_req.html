@@ -210,14 +210,13 @@
     newRow.insertCell(2).innerHTML = `<input type="text" class="form-control" name="marca[]" placeholder="Marca">`;
     newRow.insertCell(3).innerHTML = `<input type="text" class="form-control" name="modelo[]" placeholder="Modelo">`;
     newRow.insertCell(4).innerHTML = `<input type="text" class="form-control" name="cantidad[]" placeholder="Cantidad">`; // Texto
-    newRow.insertCell(5).innerHTML = `<input type="text" class="form-control" name="estado[]" placeholder="Estado">`; // Texto
-    newRow.insertCell(6).innerHTML = `<input type="text" class="form-control" name="udm[]" placeholder="UDM">`;
-    newRow.insertCell(7).innerHTML = `<input type="text" class="form-control" name="proveedor[]" placeholder="Proveedor">`;
-    newRow.insertCell(8).innerHTML = `<input type="text" class="form-control" name="oc[]" placeholder="OC">`;
-    newRow.insertCell(9).innerHTML = `<input type="file" class="form-control" name="imagen[]">`;
+    newRow.insertCell(5).innerHTML = `<input type="text" class="form-control" name="udm[]" placeholder="UDM">`;
+    newRow.insertCell(6).innerHTML = `<input type="text" class="form-control" name="proveedor[]" placeholder="Proveedor">`;
+    newRow.insertCell(7).innerHTML = `<input type="text" class="form-control" name="oc[]" placeholder="OC">`; // Texto
+    newRow.insertCell(8).innerHTML = `<input type="file" class="form-control" name="imagen[]">`;
 
     // Agregar botón de eliminar
-    const removeCell = newRow.insertCell(10);
+    const removeCell = newRow.insertCell(9);
     removeCell.innerHTML = `<button type="button" class="btn btn-warning removeRowBtn">Eliminar</button>`;
     addRemoveRowEvent(removeCell.querySelector('.removeRowBtn'));
 });
