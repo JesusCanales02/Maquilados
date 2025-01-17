@@ -67,7 +67,6 @@
 
 <body>
     <div class="container mt-5">
-        <!-- Formulario para agregar requisición -->
         <form action="{{ url_for('guardar_req') }}" method="post" enctype="multipart/form-data">
             <!-- Sección principal de datos de la requisición -->
             <div class="row mb-4">
@@ -89,7 +88,6 @@
                 </div>
             </div>
 
-            <!-- Tabla para ingresar los ítems de la requisición -->
             <div class="row">
                 <div class="table-container">
                     <table class="table table-bordered" id="requisicionTable">
@@ -138,7 +136,6 @@
                     </div>
                 </div>
 
-                <!-- Contenedor de información adicional / estado actual -->
                 <div class="info-container bg-secondary bg-gradient bg-opacity-50 p-3">
                     <h3>Acciones / estado actual</h3>
                     <div class="mb-3">
@@ -205,24 +202,22 @@
     // Agregar número de línea
     newRow.insertCell(0).innerHTML = table.rows.length;
 
-    // Crear las columnas de entrada
     newRow.insertCell(1).innerHTML = `<input type="text" class="form-control" name="descripcion[]" placeholder="Descripción">`;
     newRow.insertCell(2).innerHTML = `<input type="text" class="form-control" name="marca[]" placeholder="Marca">`;
     newRow.insertCell(3).innerHTML = `<input type="text" class="form-control" name="modelo[]" placeholder="Modelo">`;
-    newRow.insertCell(4).innerHTML = `<input type="text" class="form-control" name="cantidad[]" placeholder="Cantidad">`; // Texto
+    newRow.insertCell(4).innerHTML = `<input type="text" class="form-control" name="cantidad[]" placeholder="Cantidad">`; 
     newRow.insertCell(5).innerHTML = `<input type="text" class="form-control" name="udm[]" placeholder="UDM">`;
     newRow.insertCell(6).innerHTML = `<input type="text" class="form-control" name="proveedor[]" placeholder="Proveedor">`;
-    newRow.insertCell(7).innerHTML = `<input type="text" class="form-control" name="oc[]" placeholder="OC">`; // Texto
+    newRow.insertCell(7).innerHTML = `<input type="text" class="form-control" name="oc[]" placeholder="OC">`; 
     newRow.insertCell(8).innerHTML = `<input type="file" class="form-control" name="imagen[]">`;
 
-    // Agregar botón de eliminar
+    // Se agrego el botón de eliminar
     const removeCell = newRow.insertCell(9);
     removeCell.innerHTML = `<button type="button" class="btn btn-warning removeRowBtn">Eliminar</button>`;
     addRemoveRowEvent(removeCell.querySelector('.removeRowBtn'));
 });
 
 
-        // Añadir evento para eliminar una fila
         function addRemoveRowEvent(button) {
             button.addEventListener('click', function () {
                 const row = button.closest('tr');
@@ -231,7 +226,6 @@
             });
         }
 
-        // Actualizar números de línea después de eliminar una fila
         function updateLineNumbers() {
             const rows = document.querySelectorAll("#requisicionTable tbody tr");
             rows.forEach((row, index) => {
@@ -239,7 +233,6 @@
             });
         }
 
-        // Agregar evento inicial a los botones existentes
         document.querySelectorAll('.removeRowBtn').forEach(function (button) {
             addRemoveRowEvent(button);
         });
@@ -247,11 +240,11 @@
         window.onload = function () {
         const today = new Date();
         const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mes comienza desde 0
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); 
         const dd = String(today.getDate()).padStart(2, '0');
 
-        const currentDate = `${yyyy}-${mm}-${dd}`; // Formato ISO 8601 (YYYY-MM-DD)
-        document.getElementById("fecha_solicitud").value = currentDate; // Asigna la fecha actual
+        const currentDate = `${yyyy}-${mm}-${dd}`; 
+        document.getElementById("fecha_solicitud").value = currentDate;
     };
     </script>
 </body>

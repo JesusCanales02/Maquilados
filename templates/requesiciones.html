@@ -10,7 +10,6 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 
     <style>
-        /* Hacer la columna de Id más ancha */
         .id-col {
             width: 10%;
         }
@@ -21,7 +20,6 @@
 </head>
 
 <body>
-    <!-- Enlace de salir con icono -->
     <div class="container mt-4">
         <div class="d-flex justify-content-between mb-3 align-items-center">
             <a href="{{ url_for('logout') }}" class="btn btn-warning d-flex align-items-center justify-content-center" style="width: 100px;">
@@ -67,7 +65,7 @@
                             <th>Descripción</th>
                             <th>Proceso</th>
                             <th>ETA</th>
-                            <th class="img-col">Imagen</th>
+                            <!-- <th class="img-col">Imagen</th> -->
                             <th>Editar</th>
                             <th>Eliminar</th>
                         </tr>
@@ -82,13 +80,13 @@
                             <td>{{ requisicion['descripcion'] }}</td>
                             <td>{{ requisicion['proceso'] }}</td>
                             <td>{{ requisicion['ETA'] }}</td>
-                            <td>
+                            <!-- <td>
                                 {% if requisicion['imagen'] %}
                                 <img src="{{ url_for('static', filename='img/' + requisicion['imagen']) }}" alt="Imagen" class="img-fluid" style="max-width: 100px;">
                                 {% else %}
                                 No imagen
                                 {% endif %}
-                            </td>
+                            </td> -->
                             <td>
                                 <a href="{{ url_for('editar_req', id=requisicion['id']) }}" class="btn btn-outline-info btn-sm w-100">Editar</a>
                             </td>

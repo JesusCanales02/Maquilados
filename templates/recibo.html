@@ -106,7 +106,6 @@
             </div>
         </form>
 
-        <!-- Tabla que solo se muestra si hay resultados -->
         <div class="table-container">
             {% if items %}
             <form method="POST" action="{{ url_for('actualizar_estado_recibo') }}">
@@ -174,9 +173,7 @@
                 const alerts = document.querySelectorAll(".alert.auto-dismiss");
                 alerts.forEach(alert => {
                     setTimeout(() => {
-                        // Oculta la alerta visualmente
                         alert.classList.remove("show"); 
-                         // Agrega la transición de desvanecimiento
                         alert.classList.add("fade");   
                         setTimeout(() => {
                             alert.remove(); 
